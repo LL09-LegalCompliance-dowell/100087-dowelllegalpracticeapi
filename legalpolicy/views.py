@@ -1,3 +1,5 @@
+import os
+from django.shortcuts import render, redirect, HttpResponse
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
@@ -8,7 +10,8 @@ from utils.dowell import (
     LEGAL_POLICY_DOCUMENT_NAME,
     LEGAL_POLICY_KEY
 )
-
+from dowelllegalpracticeapi.settings import BASE_DIR
+from string import Template
 from legalpolicy.serializers import (LegalPolicySerializer)
 
 
@@ -145,3 +148,55 @@ class LegalPolicyDetail(APIView):
 
         else:
             return Response(response_data, status= status_code)
+
+
+
+def read_template(filename:str) -> Template:
+    content=""
+
+    # Get obsolute path
+    file_path = os.path.join(BASE_DIR, f"templates/{filename}")
+
+    # load content
+    with open(file_path, 'r') as template_file:
+        content = template_file.read()
+        
+    return Template(content)
+
+
+def get_policy_template_name(policy:str) -> str:
+
+    if policy == "app-privacy-policy":
+        return "app-privacy-policy.html"
+
+    elif policy == "mobile-app-privacy-policy-summary":
+        return "mobile-app-privacy-policy-summary.html"
+
+    elif policy == "disclaimer":
+        return "disclaimer.html"
+
+
+def load_public_legal_policy(request, content_id:str, policy:str):
+    try:
+        # retrieve policy related data from
+        # database
+        response_data = fetch_document(
+            LEGAL_POLICY_COLLECTION,
+            LEGAL_POLICY_DOCUMENT_NAME,
+            fields={"eventId": content_id}
+            )
+        
+        data = response_data['data'][0]
+
+        # load policy template from the filesystem
+        content = read_template(get_policy_template_name(policy))
+
+        # replace placeholders in the template with actual values
+        content = content.substitute(**data['policies_api'])
+        # return html context
+        return HttpResponse(content= content)
+
+
+    except Exception as err:
+        return HttpResponse(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+

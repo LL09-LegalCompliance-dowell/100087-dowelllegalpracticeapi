@@ -15,9 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from legalpolicy.views import load_public_legal_policy
 
 urlpatterns = [
 
     path('admin/', admin.site.urls),
-    path("api/", include("legalpolicy.urls"))
+    path("api/", include("legalpolicy.urls")),
+    path("policy/<str:content_id>/<str:policy>", load_public_legal_policy, name="load_public_legal_policy")
 ]
