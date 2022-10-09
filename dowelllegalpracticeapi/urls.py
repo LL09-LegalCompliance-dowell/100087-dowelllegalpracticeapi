@@ -21,5 +21,5 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
     path("api/", include("legalpolicy.urls")),
-    path("policy/<str:content_id>/<str:policy>", load_public_legal_policy, name="load_public_legal_policy")
+    path("policy/<str:app_event_id>/<str:policy>/", load_public_legal_policy, name="load_public_legal_policy")
 ]

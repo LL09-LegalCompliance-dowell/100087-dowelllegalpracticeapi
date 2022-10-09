@@ -1,4 +1,5 @@
 import os
+import django
 from django.shortcuts import render, redirect, HttpResponse
 from rest_framework.views import APIView
 from rest_framework import status
@@ -176,14 +177,17 @@ def get_policy_template_name(policy:str) -> str:
         return "disclaimer.html"
 
 
-def load_public_legal_policy(request, content_id:str, policy:str):
+def load_public_legal_policy(request, app_event_id:str, policy:str):
     try:
+
+        format = request.GET.get("format", "html")
+
         # retrieve policy related data from
         # database
         response_data = fetch_document(
             LEGAL_POLICY_COLLECTION,
             LEGAL_POLICY_DOCUMENT_NAME,
-            fields={"eventId": content_id}
+            fields={"eventId": app_event_id}
             )
         
         data = response_data['data'][0]
@@ -194,7 +198,18 @@ def load_public_legal_policy(request, content_id:str, policy:str):
         # replace placeholders in the template with actual values
         content = content.substitute(**data['policies_api'])
         # return html context
-        return HttpResponse(content= content)
+
+        if format == "html":
+            return HttpResponse(content= content)
+
+
+        # return json data
+        from django.http import JsonResponse
+        return JsonResponse({
+            "app_event_id": app_event_id,
+            "content": content,
+            "policy_type": policy
+        })
 
 
     except Exception as err:
