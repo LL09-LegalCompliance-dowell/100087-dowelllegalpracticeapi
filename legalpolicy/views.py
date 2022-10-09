@@ -175,6 +175,9 @@ def get_policy_template_name(policy:str) -> str:
 
     elif policy == "disclaimer":
         return "disclaimer.html"
+    
+    elif policy == "website-privacy-policy":
+        return "website-privacy-policy.html"
 
 
 def load_public_legal_policy(request, app_event_id:str, policy:str):
