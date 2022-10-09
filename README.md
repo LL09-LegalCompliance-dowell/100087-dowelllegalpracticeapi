@@ -250,3 +250,11 @@ The API will return three error types when requests fail:
 ```
 
 
+
+### Types of Policy
+- app-privacy-policy
+- mobile-app-privacy-policy-summary
+- disclaimer
+- website-privacy-policy
+
+
