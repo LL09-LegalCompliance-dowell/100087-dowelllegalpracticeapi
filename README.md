@@ -55,7 +55,8 @@ The API will return three error types when requests fail:
                 "company_country": "Singapore",
                 "contact_email_id": "app@app.com",
                 "website_contact_page_url": "http://appsample.com",
-                "last_update_date": "2022-10-09"
+                "last_update_date": "2022-10-09",
+                "app_or_website_governed_by_or_jurisdiction": " "
             }
         },
         {
@@ -72,7 +73,8 @@ The API will return three error types when requests fail:
                 "company_country": "Singapore",
                 "contact_email_id": "app@app.com",
                 "website_contact_page_url": "http://appsample.com",
-                "last_update_date": "2022-10-09"
+                "last_update_date": "2022-10-09",
+                "app_or_website_governed_by_or_jurisdiction": " "
             }
         }
     ]
@@ -85,8 +87,7 @@ The API will return three error types when requests fail:
 - General:
   - Creates a new app, website and services details using the submitted json data, Returns the detail, success value, and event id.
 - `curl http://127.0.0.1:8000/api/legalpolicies -X POST -H "Content-Type: application/json" -d '{"platform_type": "App","app_or_website_or_service_name": "LegalZard","app_or_website_or_service_url": "https://play.google.com/store/apps/details?id=com.dowelllicenses.policies","description": "App description",
-"company_name": "Dowell","company_address": "Singapore 7845 STREET","company_registration_number": "SAMPLE78545REG","company_country": "Singapore","contact_email_id": "app@app.com","website_contact_page_url": "http://appsample.com","last_update_date": "2022-10-09"
-}'`
+"company_name": "Dowell","company_address": "Singapore 7845 STREET","company_registration_number": "SAMPLE78545REG","company_country": "Singapore","contact_email_id": "app@app.com","website_contact_page_url": "http://appsample.com","last_update_date": "2022-10-09", "app_or_website_governed_by_or_jurisdiction": " "}'`
 
 - You can also open the link `http://127.0.0.1:8000/api/licenses/` in a browser and perform the post operation
 
@@ -108,7 +109,8 @@ The API will return three error types when requests fail:
                 "company_country": "Singapore",
                 "contact_email_id": "app@app.com",
                 "website_contact_page_url": "http://appsample.com",
-                "last_update_date": "2022-10-09"
+                "last_update_date": "2022-10-09",
+                "app_or_website_governed_by_or_jurisdiction": " "
             }
         }
         
@@ -142,7 +144,8 @@ The API will return three error types when requests fail:
                 "company_country": "Singapore",
                 "contact_email_id": "app@app.com",
                 "website_contact_page_url": "http://appsample.com",
-                "last_update_date": "2022-10-09"
+                "last_update_date": "2022-10-09",
+                "app_or_website_governed_by_or_jurisdiction": " "
             }
         }
         
@@ -156,8 +159,7 @@ The API will return three error types when requests fail:
 - General:
   - update legal policy object detail for app, website and services using the submitted json data, Returns the detail, success value, and event id.
 - `curl http://127.0.0.1:8000/api/legalpolicies -X POST -H "Content-Type: application/json" -d '{"platform_type": "App","app_or_website_or_service_name": "LegalZard Part","app_or_website_or_service_url": "https://play.google.com/store/apps/details?id=com.dowelllicenses.policies","description": "App description",
-"company_name": "Dowell","company_address": "Singapore 7845 STREET","company_registration_number": "SAMPLE78545REG","company_country": "Singapore","contact_email_id": "app@app.com","website_contact_page_url": "http://appsample.com","last_update_date": "2022-10-09"
-}'`
+"company_name": "Dowell","company_address": "Singapore 7845 STREET","company_registration_number": "SAMPLE78545REG","company_country": "Singapore","contact_email_id": "app@app.com","website_contact_page_url": "http://appsample.com","last_update_date": "2022-10-09", "app_or_website_governed_by_or_jurisdiction": " "}'`
 
 - You can also open the link `http://127.0.0.1:8000/api/legalpolicies/FB1010000000001665306290565391/` in a browser and perform the post operation
 
@@ -179,7 +181,8 @@ The API will return three error types when requests fail:
                 "company_country": "Singapore",
                 "contact_email_id": "app@app.com",
                 "website_contact_page_url": "http://appsample.com",
-                "last_update_date": "2022-10-09"
+                "last_update_date": "2022-10-09",
+                "app_or_website_governed_by_or_jurisdiction": " "
             }
         }
         
@@ -213,7 +216,8 @@ The API will return three error types when requests fail:
                 "company_country": "Singapore",
                 "contact_email_id": "app@app.com",
                 "website_contact_page_url": "http://appsample.com",
-                "last_update_date": "2022-10-09"
+                "last_update_date": "2022-10-09",
+                "app_or_website_governed_by_or_jurisdiction": " "
             }
         }
         
@@ -252,9 +256,12 @@ The API will return three error types when requests fail:
 
 
 ### Types of Policy
-- app-privacy-policy
-- mobile-app-privacy-policy-summary
-- disclaimer
-- website-privacy-policy
+- [app-privacy-policy](http://127.0.0.1:8000/policy/FB1010000000001665306290565391/app-privacy-policy/)
+- [mobile-app-privacy-policy-summary](http://127.0.0.1:8000/policy/FB1010000000001665306290565391/mobile-app-privacy-policy-summary/)
+- [disclaimer](http://127.0.0.1:8000/policy/FB1010000000001665306290565391/disclaimer/)
+- [website-privacy-policy](http://127.0.0.1:8000/policy/FB1010000000001665306290565391/website-privacy-policy/)
+- [cookies-policy](http://127.0.0.1:8000/policy/FB1010000000001665306290565391/cookies-policy/)
+- [terms-and-conditions](http://127.0.0.1:8000/policy/FB1010000000001665306290565391/terms-and-conditions/)
+- [end-user-license-agreement](http://127.0.0.1:8000/policy/FB1010000000001665306290565391/end-user-license-agreement/)
 
 

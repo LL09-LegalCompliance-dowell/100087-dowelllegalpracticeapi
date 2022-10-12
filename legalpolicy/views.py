@@ -179,6 +179,15 @@ def get_policy_template_name(policy:str) -> str:
     elif policy == "website-privacy-policy":
         return "website-privacy-policy.html"
 
+    elif policy == "cookies-policy":
+        return "cookies-policy.html"
+
+    elif policy == "terms-and-conditions":
+        return "terms-and-conditions.html"
+
+    elif policy == "end-user-license-agreement":
+        return "end-user-license-agreement.html"
+
 
 def load_public_legal_policy(request, app_event_id:str, policy:str):
     try:
@@ -216,5 +225,6 @@ def load_public_legal_policy(request, app_event_id:str, policy:str):
 
 
     except Exception as err:
+        print(str(err))
         return HttpResponse(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 

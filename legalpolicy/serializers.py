@@ -30,6 +30,7 @@ class LegalPolicySerializer(serializers.Serializer):
     contact_email_id = serializers.EmailField(required=True)
     website_contact_page_url = serializers.URLField(required=True)
     last_update_date = serializers.CharField(max_length=50, allow_blank=False, required=True)
+    app_or_website_governed_by_or_jurisdiction = serializers.CharField(max_length=100, allow_blank=True, required=False, default= " ")
 
 
     def create(self, validated_data):
