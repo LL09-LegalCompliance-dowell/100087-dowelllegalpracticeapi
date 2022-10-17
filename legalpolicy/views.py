@@ -1,6 +1,6 @@
 import os
 import django
-from django.shortcuts import render, redirect, HttpResponse
+from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
@@ -18,7 +18,9 @@ from legalpolicy.serializers import (LegalPolicySerializer)
 
 
 def index(request):
-    return HttpResponse("<h1>WELCOME TO LEGAL POLICY API<h1>")
+    return JsonResponse({
+        "message": "Welcome to legal policy API"
+    })
 
 
 class LegalPolicyList(APIView):
