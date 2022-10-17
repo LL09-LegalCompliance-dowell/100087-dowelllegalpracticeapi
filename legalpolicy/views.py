@@ -1,6 +1,6 @@
 import os
 import django
-from django.shortcuts import render, redirect, HttpResponse
+from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
@@ -14,6 +14,13 @@ from utils.dowell import (
 from dowelllegalpracticeapi.settings import BASE_DIR
 from string import Template
 from legalpolicy.serializers import (LegalPolicySerializer)
+
+
+
+def index(request):
+    return JsonResponse({
+        "message": "Welcome to legal policy API"
+    })
 
 
 class LegalPolicyList(APIView):
@@ -187,6 +194,18 @@ def get_policy_template_name(policy:str) -> str:
 
     elif policy == "end-user-license-agreement":
         return "end-user-license-agreement.html"
+
+    elif policy == "return-refund-policy":
+        return "return-refund-policy.html"
+
+    elif policy == "safety-disclaimer":
+        return "safety-disclaimer.html"
+
+    elif policy == "security-policy-for-wifi-qr-code":
+        return "security-policy-for-wifi-qr-code.html"
+
+    elif policy == "website-security-policy":
+        return "website-security-policy.html"
 
 
 def load_public_legal_policy(request, app_event_id:str, policy:str):

@@ -23,7 +23,9 @@ class LegalPolicyTestCase(TestCase):
             "company_country": "Singapore",
             "contact_email_id": "app@app.com",
             "website_contact_page_url": "http://appsample.com",
-            "last_update_date": "2022-10-09"
+            "app_or_website_governed_by_or_jurisdiction": "India",
+            "days_allowed_for_cancellation_of_order_or_product": 0,
+            "reimburse_days": 0,
             }
 
 
@@ -38,7 +40,10 @@ class LegalPolicyTestCase(TestCase):
             "company_country": "Singapore",
             "contact_email_id": "app@app.com",
             "website_contact_page_url": "http://appsample.com",
-            "last_update_date": "2022-10-09"
+            "last_update_date": "2022-10-09",
+            "app_or_website_governed_by_or_jurisdiction": "India",
+            "days_allowed_for_cancellation_of_order_or_product": 90,
+            "reimburse_days": 30,
             }
 
 
