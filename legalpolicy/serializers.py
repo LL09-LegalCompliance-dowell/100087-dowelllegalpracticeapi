@@ -31,6 +31,8 @@ class LegalPolicySerializer(serializers.Serializer):
     website_contact_page_url = serializers.URLField(required=True)
     last_update_date = serializers.CharField(max_length=50, allow_blank=False, required=True)
     app_or_website_governed_by_or_jurisdiction = serializers.CharField(max_length=100, allow_blank=True, required=False, default= " ")
+    days_allowed_for_cancellation_of_order_or_product = serializers.IntegerField(required=False, default= 0)
+    reimburse_days = serializers.IntegerField(required=False, default= 0)
 
 
     def create(self, validated_data):
