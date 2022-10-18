@@ -1,6 +1,6 @@
 import os
 import django
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
