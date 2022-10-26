@@ -239,14 +239,14 @@ The API will return three error types when requests fail:
 ```
 
 
-#### GET /policy/{app_event_id}/{policy_type}/
+#### GET /policy/{app_event_id}/{policy_type}/?redirect_url=callbackurl
 
 - General:
   - load legal privacy policy, this option will return a rendered html page.
-- `http://127.0.0.1:8000/policy/FB1010000000001665306290565391/website-privacy-policy/`
+- `http://127.0.0.1:8000/policy/FB1010000000001665306290565391/website-privacy-policy/?redirect_url=http://127.0.0.1:8001/wait-for-response/`
 
 
-[Visit website policy page](https://100087.pythonanywhere.com/policy/FB1010000000001665306290565391/website-privacy-policy/)
+[Visit website policy page](https://100087.pythonanywhere.com/policy/FB1010000000001665306290565391/website-privacy-policy/?redirect_url=http://127.0.0.1:8001/wait-for-response/)
 
 
 
@@ -279,4 +279,3 @@ The API will return three error types when requests fail:
 - [safety-disclaimer](https://100087.pythonanywhere.com/policy/FB1010000000001665306290565391/safety-disclaimer/)
 - [security-policy-for-wifi-qr-code](https://100087.pythonanywhere.com/policy/FB1010000000001665306290565391/security-policy-for-wifi-qr-code/)
 - [website-security-policy](https://100087.pythonanywhere.com/policy/FB1010000000001665306290565391/website-security-policy/)
-

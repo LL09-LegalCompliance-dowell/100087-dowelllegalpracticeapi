@@ -1,6 +1,7 @@
 import os
-import django
+from django.shortcuts import redirect, render
 from django.http import JsonResponse, HttpResponse
+import jwt
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
@@ -212,6 +213,19 @@ def load_public_legal_policy(request, app_event_id:str, policy:str):
     try:
 
         format = request.GET.get("format", "html")
+        redirect_url = request.GET.get("redirect_url", "/")
+        from .rc_jwt import encode
+
+        jwt_raw_data = {
+            "app_event_id": app_event_id,
+            "isSuccess": True,
+        }
+
+
+        jwt_token = encode(jwt_raw_data)
+        redirect_url = f"{redirect_url}?token={jwt_token}"
+        # print("redirect_url: ",redirect_url)
+
 
         # retrieve policy related data from
         # database
@@ -227,7 +241,7 @@ def load_public_legal_policy(request, app_event_id:str, policy:str):
         content = read_template(get_policy_template_name(policy))
 
         # replace placeholders in the template with actual values
-        content = content.substitute(**data['policies_api'])
+        content = content.substitute(**data['policies_api'], redirect_url=redirect_url)
         # return html context
 
         if format == "html":
@@ -246,4 +260,7 @@ def load_public_legal_policy(request, app_event_id:str, policy:str):
     except Exception as err:
         print(str(err))
         return HttpResponse(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
 
