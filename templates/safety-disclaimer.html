@@ -221,5 +221,37 @@
     <p class="c3">
       <span class="c5"></span>
     </p>
+
+    
+
+    <form style="margin-top:40px;" action="${redirect_url}" method="get">
+      <input id="agree-to-legal-policy-api" data-redirect-url="${redirect_url}" type="checkbox" name="agree-to-legal-policy-api" value="0">
+      <label for="agree-to-legal-policy-api"> I agree</label><br><br>
+    </form>
+
   </body>
+
+
+
+  <script>
+
+  document.addEventListener("DOMContentLoaded", function(){
+
+      const igreeEl = document.getElementById("agree-to-legal-policy-api");
+      igreeEl.addEventListener("click", function(e){
+        
+        if (e.target.checked){
+          const redirectUrl = igreeEl.getAttribute("data-redirect-url");
+          console.log(redirectUrl)
+          window.location.href = redirectUrl;
+        }
+      })
+
+
+  })
+
+
+
+
+  </script>
 </html>
