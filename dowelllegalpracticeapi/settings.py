@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
-    'legalpolicy'
+    'legalpolicy',
+    'legalpolicy2'
 ]
 
 MIDDLEWARE = [
