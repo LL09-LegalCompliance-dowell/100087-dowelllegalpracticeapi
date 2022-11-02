@@ -90,11 +90,18 @@ def load_public_legal_policy(request, app_event_id:str, policy:str):
 
         try:
             # log request id 
-            new_track = IAgreeToPolicyTracker()
-            new_track.policy_request_id = policy_request_id
-            new_track.i_agree = False
-            new_track.log_datetime = datetime.now()
-            new_track.save()
+            query_data = IAgreeToPolicyTracker.objects.filter(policy_request_id = policy_request_id).first()
+            if query_data:
+                query_data.i_agree = True
+                query_data.save()
+
+            else:
+                new_track = IAgreeToPolicyTracker()
+                new_track.policy_request_id = policy_request_id
+                new_track.i_agree = False
+                new_track.log_datetime = datetime.now()
+                new_track.save()
+                
         except Exception as err:
             print(str(err))
 
@@ -112,7 +119,11 @@ def load_public_legal_policy(request, app_event_id:str, policy:str):
         content = read_template(get_policy_template_name(policy))
 
         # replace placeholders in the template with actual values
-        content = content.substitute(**data['policies_api'], redirect_url=redirect_url)
+        content = content.substitute(
+            **data['policies_api'],
+            redirect_url = redirect_url,
+            policy_request_id = policy_request_id
+            )
         # return html context
 
         if format == "html":
