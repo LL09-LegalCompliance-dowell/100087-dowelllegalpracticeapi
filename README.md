@@ -266,6 +266,48 @@ The API will return three error types when requests fail:
 ```
 
 
+### Legal Policy API (I agree checkbox selected response)
+
+
+#### GET /tkr-policy/{app_event_id}/{policy_type}/?redirect_url=callbackurl policy_request_id=FB101000000000166530629056539143455595959
+
+- General:
+  - This always load legal privacy policy.
+  - `http://127.0.0.1:8000/tkr-policy/FB1010000000001665306290565391/app-privacy-policy/?redirect_url=http://127.0.0.1:8000/callbackurl&policy_request_id=FB101000000000166530629056539143455595959`
+
+  - policy_request_id = app_event_id + random unique number
+
+
+#### GET /api/tkr-legalpolicies/{policy_request_id}/
+
+- General:
+  -  Call to this endpoint get "i agree" status on callback.
+  - `http://127.0.0.1:8000/api/tkr-legalpolicies/FB101000000000166530629056539143455595959/`
+
+```  
+{
+    "policy_request_id": "FB101000000000166530629056539143455595959",
+    "i_agree": true,
+    "isSuccess": true
+}
+
+```
+
+#### PUT /api/tkr-legalpolicies/{policy_request_id}/
+
+- General:
+  -  Call this endpoint  update "i agree" status when click/selected, it is achive by javascript embedded legal policy web page.
+  - `curl -i -X PUT -d '{"i_agree": true}' -H "Content-Type: application/json" http://127.0.0.1:8000/api/tkr-legalpolicies/FB101000000000166530629056539143455595959/`
+
+```  
+{
+    "policy_request_id": "FB101000000000166530629056539143455595959",
+    "isSuccess": true
+}
+
+```
+
+
 
 ### Types of Policy
 - [app-privacy-policy](https://100087.pythonanywhere.com/policy/FB1010000000001665306290565391/app-privacy-policy/)
