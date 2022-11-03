@@ -248,12 +248,10 @@
   
           // update server
           const url = "/api/tkr-legalpolicies/"+policyRequestId+"/";
-          const formData = new FormData();
-          formData.append("i_agree", true);
   
           fetch(url, {
             method: "PUT",
-            body: formData,
+            body: JSON.stringify({"i_agree": true}),
             headers: {"Content-Type": "application/json"}
           })
   
@@ -267,11 +265,9 @@
 
           // update server
           const url = "/api/tkr-legalpolicies/"+policyRequestId+"/";
-          const formData = new FormData();
-          formData.append("i_agree", false);  
           fetch(url, {
             method: "PUT",
-            body: formData,
+            body: JSON.stringify({"i_agree": false}),
             headers: {"Content-Type": "application/json"}
           })
 
