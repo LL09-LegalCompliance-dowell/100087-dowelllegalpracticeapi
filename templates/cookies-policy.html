@@ -825,33 +825,68 @@
     </p>
 
     <form style="margin-top:40px;" action="${redirect_url}" method="get">
-      <input id="agree-to-legal-policy-api" data-redirect-url="${redirect_url}" type="checkbox" name="agree-to-legal-policy-api" value="0">
+      <input id="agree-to-legal-policy-api" data-policy-request-id="${policy_request_id}" data-redirect-url="${redirect_url}" type="checkbox" name="agree-to-legal-policy-api" value="0">
       <label for="agree-to-legal-policy-api"> I agree</label><br><br>
     </form>
 
   </body>
 
 
-
   <script>
 
-  document.addEventListener("DOMContentLoaded", function(){
-
-      const igreeEl = document.getElementById("agree-to-legal-policy-api");
-      igreeEl.addEventListener("click", function(e){
-        
+    document.addEventListener("DOMContentLoaded", function(){
+  
+        const igreeEl = document.getElementById("agree-to-legal-policy-api");
+        igreeEl.addEventListener("click", function(e){
+        const redirectUrl = igreeEl.getAttribute("data-redirect-url");
+        const policyRequestId = igreeEl.getAttribute("data-policy-request-id");
         if (e.target.checked){
-          const redirectUrl = igreeEl.getAttribute("data-redirect-url");
+  
+  
+          // update local storage
+          window.localStorage.setItem(policyRequestId, JSON.stringify({iAgree: true}));
+  
+          // update server
+          const url = "/api/tkr-legalpolicies/"+policyRequestId+"/";
+          const formData = new FormData();
+          formData.append("i_agree", true);
+  
+          fetch(url, {
+            method: "PUT",
+            body: formData,
+            headers: {"Content-Type": "application/json"}
+          })
+  
+  
           console.log(redirectUrl)
           window.location.href = redirectUrl;
+  
+  
+        }else {
+
+
+          // update server
+          const url = "/api/tkr-legalpolicies/"+policyRequestId+"/";
+          const formData = new FormData();
+          formData.append("i_agree", false);  
+          fetch(url, {
+            method: "PUT",
+            body: formData,
+            headers: {"Content-Type": "application/json"}
+          })
+
+
+          window.localStorage.setItem(policyRequestId, JSON.stringify({iAgree: false}));
         }
       })
-
-
-  })
-
-
-
-
-  </script>
+  
+  
+    })
+  
+  
+  
+  
+    </script>
 </html>
+
+
