@@ -241,7 +241,11 @@ def load_public_legal_policy(request, app_event_id:str, policy:str):
         content = read_template(get_policy_template_name(policy))
 
         # replace placeholders in the template with actual values
-        content = content.substitute(**data['policies_api'], redirect_url=redirect_url)
+        content = content.substitute(
+            **data['policies_api'],
+            redirect_url=redirect_url,
+            policy_request_id = ""
+            )
         # return html context
 
         if format == "html":
