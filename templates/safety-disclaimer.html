@@ -1,7 +1,15 @@
 <html>
   <head>
     <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <style type="text/css">
+
+      #wrap {
+        max-width: 800px;
+      }
+
+      *{max-width: 100%}
+
       @import url('https://themes.googleusercontent.com/fonts/css?kit=dpiI8CyVsrzWsJLBFKehGpLhv3qFjX7dUn1mYxfCXhI');
 
       ol {
@@ -209,25 +217,32 @@
     </style>
   </head>
   <body class="c2 doc-content">
-    <p class="c0">
-      <span class="c6">Safety Disclaimer </span>
-    </p>
-    <p class="c0">
-      <span class="c4">${company_name} may collect certain personally identifiable information (&ldquo;personal information&rdquo;) about you when you visit our App. &nbsp;Examples of personal information we may collect include your name, address, telephone number, fax number, and e-mail address. </span>
-    </p>
-    <p class="c1">
-      <span class="c4">We also automatically collect certain non-personally identifiable information when you visit our App, including, but not limited to, the location, the type of browser you are using, the type of operating system you are using, and the domain name of your Internet service provider.</span>
-    </p>
-    <p class="c3">
-      <span class="c5"></span>
-    </p>
-
     
+    <div id="wrap">
 
-    <form style="margin-top:40px;" action="${redirect_url}" method="get">
-      <input id="agree-to-legal-policy-api" data-policy-request-id="${policy_request_id}" data-redirect-url="${redirect_url}" type="checkbox" name="agree-to-legal-policy-api" value="0">
-      <label for="agree-to-legal-policy-api"> I agree</label><br><br>
-    </form>
+      <p class="c0">
+        <span class="c6">Safety Disclaimer </span>
+      </p>
+      <p class="c0">
+        <span class="c4">${company_name} may collect certain personally identifiable information (&ldquo;personal information&rdquo;) about you when you visit our App. &nbsp;Examples of personal information we may collect include your name, address, telephone number, fax number, and e-mail address. </span>
+      </p>
+      <p class="c1">
+        <span class="c4">We also automatically collect certain non-personally identifiable information when you visit our App, including, but not limited to, the location, the type of browser you are using, the type of operating system you are using, and the domain name of your Internet service provider.</span>
+      </p>
+      <p class="c3">
+        <span class="c5"></span>
+      </p>
+  
+      
+  
+      <form style="margin-top:40px;" action="${redirect_url}" method="get">
+        <input id="agree-to-legal-policy-api" data-policy-request-id="${policy_request_id}" data-redirect-url="${redirect_url}" type="checkbox" name="agree-to-legal-policy-api" value="0">
+        <label for="agree-to-legal-policy-api"> I agree</label><br><br>
+      </form>
+
+    </div>
+
+
 
   </body>
 
