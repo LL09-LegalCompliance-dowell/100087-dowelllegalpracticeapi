@@ -29,6 +29,7 @@ class IAgreeToPolicyTrackerDetail(APIView):
                 response_data= {
                     "policy_request_id": policy_request_id,
                     "i_agree": query_data.i_agree,
+                    "log_datetime": query_data.log_datetime.isoformat(),
                     "isSuccess": True,
                 }
             status_code = status.HTTP_200_OK
