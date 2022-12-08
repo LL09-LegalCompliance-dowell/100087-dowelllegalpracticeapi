@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 from legalpolicy import views as vlp
 from legalpolicy2 import views as vlp2
+from django.conf.urls.static import static
+from django.conf import settings
 
 
 urlpatterns = [
@@ -26,6 +28,8 @@ urlpatterns = [
     path("api/", include("legalpolicy.urls")),
     path("api/", include("legalpolicy2.urls")),
     path("policy/<str:app_event_id>/<str:policy>/", vlp.load_public_legal_policy, name="load_public_legal_policy"),
-    path("tkr-policy/<str:app_event_id>/<str:policy>/", vlp2.load_public_legal_policy, name="tkr_load_public_legal_policy"),
+    path("legalpolicies/<str:app_event_id>/<str:policy>/policies/", vlp2.load_public_legal_policy, name="tkr_load_public_legal_policy"),
     path('', vlp.index, name="index")
-]
+]\
+    + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)\
+    + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

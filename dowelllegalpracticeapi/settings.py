@@ -129,5 +129,7 @@ STATIC_ROOT = '/home/100087/100087-dowelllegalpracticeapi/static'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-ALLOWED_HOSTS=['*']
+# https://github.com/adamchainz/django-cors-headers
 CORS_ORIGIN_ALLOW_ALL = True
+
+

@@ -239,69 +239,60 @@ The API will return three error types when requests fail:
 ```
 
 
-#### GET /policy/{app_event_id}/{policy_type}/?redirect_url=callbackurl
-
-- General:
-  - load legal privacy policy, this option will return a rendered html page.
-- `http://127.0.0.1:8000/policy/FB1010000000001665306290565391/website-privacy-policy/?redirect_url=http://127.0.0.1:8001/wait-for-response/`
-
-
-[Visit website policy page](https://100087.pythonanywhere.com/policy/FB1010000000001665306290565391/website-privacy-policy/?redirect_url=http://127.0.0.1:8001/wait-for-response/)
-
-
-
-#### GET /policy/{app_event_id}/{policy_type}/?format=json
-
-- General:
-  - load legal privacy policy, this option will return json object containing html content.
-- `http://127.0.0.1:8000/policy/FB1010000000001665306290565391/website-privacy-policy/`
-
-```
-{
-    "app_event_id": "FB1010000000001665306290565391", 
-    "content": "<html><body><span>mobile app privacy policy summary</span></body></html>", 
-    "policy_type": "mobile-app-privacy-policy-summary"
-}
-
-```
-
 
 ### Legal Policy API (I agree checkbox selected response)
 
 
-#### GET /tkr-policy/{app_event_id}/{policy_type}/?redirect_url=callbackurl policy_request_id=FB101000000000166530629056539143455595959
+#### GET /legalpolicies/{app_event_id}/{policy_type}/policies/?redirect_url=callbackurl session_id=FB101000000000166530629056539143455595
 
 - General:
   - This always load legal privacy policy.
-  - `http://127.0.0.1:8000/tkr-policy/FB1010000000001665306290565391/app-privacy-policy/?redirect_url=http://127.0.0.1:8000/callbackurl&policy_request_id=FB101000000000166530629056539143455595959`
-
-  - policy_request_id = app_event_id + random unique number
+  - `http://127.0.0.1:8000/legalpolicies/FB1010000000001665306290565391/app-privacy-policy/policies/?redirect_url=http://127.0.0.1:8000/callbackurl&session_id=FB101000000000166530629056539143455595`
 
 
-#### GET /api/tkr-legalpolicies/{policy_request_id}/
+
+
+#### GET /api/legalpolicies/{session_id}/iagreestatus/
 
 - General:
   -  Call to this endpoint get "i agree" status on callback.
-  - `http://127.0.0.1:8000/api/tkr-legalpolicies/FB101000000000166530629056539143455595959/`
+  - `http://127.0.0.1:8000/api/legalpolicies/FB101000000000166530629056539143455595/iagreestatus/`
 
-```  
+```
 {
-    "policy_request_id": "FB101000000000166530629056539143455595959",
-    "i_agree": true,
+    "data": [
+        {
+            "event_id": "FB101000000000166530629056539143455595APP-PRIVACY-POLICY",
+            "session_id": "FB101000000000166530629056539143455595",
+            "i_agree": true,
+            "log_datetime": "2022-12-08T18:33:58.064201+00:00",
+            "i_agreed_datetime": "2022-12-08T18:34:14.471947+00:00",
+            "legal_policy_type": "app-privacy-policy"
+        },
+        {
+            "event_id": "FB101000000000166530629056539143455595WEBSITE-PRIVACY-POLICY",
+            "session_id": "FB101000000000166530629056539143455595",
+            "i_agree": true,
+            "log_datetime": "2022-12-08T18:41:47.335695+00:00",
+            "i_agreed_datetime": "2022-12-08T18:42:06.403831+00:00",
+            "legal_policy_type": "website-privacy-policy"
+        }
+    ],
     "isSuccess": true
 }
 
 ```
 
-#### PUT /api/tkr-legalpolicies/{policy_request_id}/
+#### PUT /api/legalpolicies/{event_id}/iagreelogs/
 
 - General:
   -  Call this endpoint  update "i agree" status when click/selected, it is achive by javascript embedded legal policy web page.
-  - `curl -i -X PUT -d '{"i_agree": true}' -H "Content-Type: application/json" http://127.0.0.1:8000/api/tkr-legalpolicies/FB101000000000166530629056539143455595959/`
+  - `curl -i -X PUT -d '{"i_agree": true}' -H "Content-Type: application/json" http://127.0.0.1:8000/api/legalpolicies/FB101000000000166530629056539143455595WEBSITE-PRIVACY-POLICY/iagreelogs/`
 
 ```  
 {
-    "policy_request_id": "FB101000000000166530629056539143455595959",
+    "event_id": "FB101000000000166530629056539143455595WEBSITE-PRIVACY-POLICY",
+    "session_id": "FB101000000000166530629056539143455595",
     "isSuccess": true
 }
 
