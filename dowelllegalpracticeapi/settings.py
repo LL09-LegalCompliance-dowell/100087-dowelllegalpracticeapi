@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'legalpolicy',
     'legalpolicy2',
-    'legalpolicyapi_testguide'
+    'legalpolicyapi_testguide',
     'corsheaders'
 ]
 
