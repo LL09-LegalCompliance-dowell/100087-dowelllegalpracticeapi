@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'legalpolicy',
     'legalpolicy2',
+    'legalpolicyapi_testguide'
     'corsheaders'
 ]
 
@@ -60,7 +61,7 @@ ROOT_URLCONF = 'dowelllegalpracticeapi.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -132,4 +133,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # https://github.com/adamchainz/django-cors-headers
 CORS_ORIGIN_ALLOW_ALL = True
 
+# CORS_ALLOWED_ORIGINS = [
+#     "https://example.com",
+#     "https://sub.example.com",
+#     "http://localhost:8080",
+#     "http://127.0.0.1:9000",
+# ]
 
