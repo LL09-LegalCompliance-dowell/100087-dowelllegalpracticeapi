@@ -243,7 +243,8 @@ The API will return three error types when requests fail:
 ### Legal Policy API (I agree checkbox selected response)
 
 
-#### GET /legalpolicies/{app_event_id}/{policy_type}/policies/?redirect_url=callbackurl session_id=FB101000000000166530629056539143455595
+#### GET /legalpolicies/{app_event_id}/{policy_type}/policies/?redirect_url={callbackurl}&session_id={session_id}
+ session_id=FB101000000000166530629056539143455595
 
 - General:
   - This always load legal privacy policy.

@@ -29,6 +29,7 @@ urlpatterns = [
     path("api/", include("legalpolicy2.urls")),
     path("policy/<str:app_event_id>/<str:policy>/", vlp.load_public_legal_policy, name="load_public_legal_policy"),
     path("legalpolicies/<str:app_event_id>/<str:policy>/policies/", vlp2.load_public_legal_policy, name="tkr_load_public_legal_policy"),
+    path("legalpolicies/testguides/", include("legalpolicyapi_testguide.urls")),
     path('', vlp.index, name="index")
 ]\
     + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)\

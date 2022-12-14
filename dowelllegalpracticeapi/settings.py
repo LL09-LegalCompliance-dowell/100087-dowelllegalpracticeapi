@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'legalpolicy',
     'legalpolicy2',
+    'legalpolicyapi_testguide'
     # 'corsheaders'
 ]
 
@@ -60,7 +61,7 @@ ROOT_URLCONF = 'dowelllegalpracticeapi.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

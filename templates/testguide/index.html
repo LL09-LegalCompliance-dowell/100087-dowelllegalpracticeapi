@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <style>
+        .content{
+            margin-bottom: 5px;
+        }
+
+        .content a{
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<div style="margin-bottom: 50px;" class="container">
+    <div class="row">
+
+        <h1 style="margin-bottom: 100px;">Legal API Test Guide</h1>
+
+        <div class="content">
+            <form action="#">
+                <label for="session_id">Session Id:</label><br>
+                <input class="form-control" type="text" id="session_id" value="ayaquq6jdyqvaq9h6dlm9ysu3wkykyx0"><br><br>
+        
+                <label for="app_event_id">App Event Id:</label><br>
+                <input class="form-control" type="text" id="app_event_id" value="FB1010000000001665306290565391"><br><br>
+        
+                <label for="redirect_url">Redirect Url:</label><br>
+                <input class="form-control" type="text" id="redirect_url" value="http://127.0.0.1:8000/legalpolicies/testguides/"><br><br>
+        
+              </form> 
+        </div>
+        
+        
+        <div class="content">
+            <input type="checkbox" id="app-privacy-policy" value="0">
+            <label for="app-privacy-policy"> <a id="app-privacy-policy-link" href="#">app-privacy-policy</a></label><br>
+        
+            <pre id="app-privacy-policy-pre">
+                Query paramater:
+                - session_id=ayaquq6jdyqvaq9h6dlm9ysu3wkykyx0
+                - redirect_url=http://127.0.0.1:8000/legalpolicies/testguides/
+        
+                Other paramater
+                - policy_type=app-privacy-policy
+                - app_event_id=FB1010000000001665306290565391 
+        
+                GET/ Request url:
+                http://127.0.0.1:8000/legalpolicies/FB1010000000001665306290565391/app-privacy-policy/policies/?redirect_url=http://127.0.0.1:8000/legalpolicies/testguides/&session_id=ayaquq6jdyqvaq9h6dlm9ysu3wkykyx0
+        
+            </pre>
+        </div>
+        
+        <div class="content">
+            <input type="checkbox" id="mobile-app-privacy-policy-summary" value="0">
+            <label for="mobile-app-privacy-policy-summary"> <a href="#">mobile-app-privacy-policy-summary</a></label><br>
+        </div>
+        
+        <div class="content">
+            <input type="checkbox" id="disclaimer"  value="0">
+            <label for="disclaimer"> <a href="#">disclaimer</a></label><br>
+        </div>
+        
+        <div class="content">
+            <input type="checkbox" id="website-privacy-policy" value="0">
+            <label for="website-privacy-policy"> <a href="#">website-privacy-policy</a></label><br>
+        </div>
+        
+        <div class="content">
+            <input type="checkbox" id="cookies-policy" value="0">
+            <label for="cookies-policy"> <a href="#">cookies-policy</a></label><br>
+        </div>
+        
+        <div class="content">
+            <input type="checkbox" id="terms-and-conditions"  value="0">
+            <label for="terms-and-conditions"> <a href="#">terms-and-conditions</a></label><br>
+        </div>
+        
+        <div class="content">
+            <input type="checkbox" id="end-user-license-agreement" value="0">
+            <label for="end-user-license-agreement"> <a href="#">end-user-license-agreement</a></label><br>
+        </div>
+        
+        <div class="content">
+            <input type="checkbox" id="return-refund-policy" value="0">
+            <label for="return-refund-policy"> <a href="#">return-refund-policy</a></label><br>
+        </div>
+        
+        <div class="content">
+            <input type="checkbox" id="safety-disclaimer" value="0">
+            <label for="safety-disclaimer"> <a href="#">safety-disclaimer</a></label><br>
+        </div>
+        
+        <div class="content">
+            <input type="checkbox" id="security-policy-for-wifi-qr-code" value="0">
+            <label for="security-policy-for-wifi-qr-code"> <a href="#">security-policy-for-wifi-qr-code</a></label><br>
+        </div>
+        
+        <div class="content">
+            <input type="checkbox" id="website-security-policy" value="0">
+            <label for="website-security-policy"> <a href="#">website-security-policy</a></label><br>
+        </div>
+        
+
+
+
+    </div>
+</div>
+
+
+
+
+
+</body>
+
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<script>
+
+    // const baseUrl = "https://100087.pythonanywhere.com/legalpolicies/"
+    // const baseApiUrl = "https://100087.pythonanywhere.com/api/legalpolicies/"
+
+    const baseUrl = "http://127.0.0.1:8000/legalpolicies/"
+    const baseApiUrl = "http://127.0.0.1:8000/api/legalpolicies/"
+    const displayRequestParam = () =>{
+        const sessionId = document.getElementById("session_id").value;
+        const appEventId = document.getElementById("app_event_id").value;
+        const redirectUrl = document.getElementById("redirect_url").value;
+        const preEl = document.getElementById("app-privacy-policy-pre");
+        const linkEl = document.getElementById("app-privacy-policy-link")
+
+        localStorage.setItem("redirectUrl", redirectUrl);
+        localStorage.setItem("sessionId", sessionId);
+        localStorage.setItem("appEventId", appEventId);
+
+
+        const content = `
+        Query paramater:
+        - session_id=${sessionId}
+        - redirect_url=${redirectUrl}
+
+        Other paramater
+        - policy_type=app-privacy-policy
+        - app_event_id=${appEventId} 
+
+        GET/ Request url:
+        ${baseUrl}${appEventId}/app-privacy-policy/policies/?redirect_url=${redirectUrl}&session_id=${sessionId}
+
+        `
+        preEl.innerHTML = content;
+        linkEl.setAttribute("href", `${baseUrl}${appEventId}/app-privacy-policy/policies/?redirect_url=${redirectUrl}&session_id=${sessionId}`)
+    }
+
+
+    const displayDefaultRequestParam = () => {
+
+        let sessionId = document.getElementById("session_id").value;
+        let appEventId = document.getElementById("app_event_id").value;
+        let redirectUrl = document.getElementById("redirect_url").value;
+        const preEl = document.getElementById("app-privacy-policy-pre");
+        const linkEl = document.getElementById("app-privacy-policy-link")
+
+        if (localStorage.getItem("redirectUrl") === null) {
+            localStorage.setItem("redirectUrl", redirectUrl);
+        }else{
+            redirectUrl = localStorage.getItem("redirectUrl");
+            document.getElementById("redirect_url").value = redirectUrl; 
+        }
+
+        if (localStorage.getItem("sessionId") === null) {
+            localStorage.setItem("sessionId", sessionId);
+            
+        }else{
+            sessionId = localStorage.getItem("sessionId");
+            document.getElementById("session_id").value = sessionId;
+        }
+
+        if (localStorage.getItem("appEventId") === null) {
+            localStorage.setItem("appEventId", appEventId);
+        }else{
+            appEventId = localStorage.getItem("appEventId")
+            document.getElementById("app_event_id").value = appEventId;
+        }
+
+
+
+        const content = `
+        GET /legalpolicies/{app_event_id}/{policy_type}/policies/?redirect_url={callbackurl}&session_id={session_id}
+
+        Query paramater:
+        - session_id=${sessionId}
+        - redirect_url=${redirectUrl}
+
+        Other paramater
+        - policy_type=app-privacy-policy
+        - app_event_id=${appEventId} 
+
+        GET Request url:
+        ${baseUrl}${appEventId}/app-privacy-policy/policies/?redirect_url=${redirectUrl}&session_id=${sessionId}
+
+        `
+        preEl.innerHTML = content;
+        linkEl.setAttribute("href", `${baseUrl}${appEventId}/app-privacy-policy/policies/?redirect_url=${redirectUrl}&session_id=${sessionId}`)
+
+    }
+
+
+    const loadIagreeStatus = () => {
+
+        let sessionId = document.getElementById("session_id").value;
+        const url = `${baseApiUrl}${sessionId}/iagreestatus/`;
+
+        fetch(url, {
+            method: "GET",
+            headers: {"Content-Type": "application/json"}
+        }).then(response => {
+
+            if (response.status === 200){
+                
+                return response.json();
+            }
+
+        }).then(jsonData => {
+
+            for (let iAgreeData of jsonData.data){
+
+                if (iAgreeData.i_agree){
+                    document.getElementById(iAgreeData.legal_policy_type).checked = true;
+                }
+
+            }
+            console.log(jsonData);
+        })
+
+
+    }
+
+
+
+
+
+
+
+
+    displayDefaultRequestParam();
+    loadIagreeStatus();
+    document.getElementById("session_id").onkeyup = displayRequestParam;
+    document.getElementById("app_event_id").onkeyup = displayRequestParam;
+    document.getElementById("redirect_url").onkeyup = displayRequestParam;
+
+    
+</script>
+</html>
