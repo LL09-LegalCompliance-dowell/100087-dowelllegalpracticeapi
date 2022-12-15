@@ -15,6 +15,8 @@ from datetime import datetime
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
+from django.views.decorators.clickjacking import xframe_options_exempt
+
 
 class IAgreeToPolicyStatus(APIView):
 
@@ -113,7 +115,7 @@ class IAgreeToPolicyTrackerDetail(APIView):
 
 
 
-
+@xframe_options_exempt
 def load_public_legal_policy(request, app_event_id:str, policy:str):
     try:
 

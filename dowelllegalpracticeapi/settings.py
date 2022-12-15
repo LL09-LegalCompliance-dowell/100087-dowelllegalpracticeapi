@@ -48,9 +48,9 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -130,8 +130,32 @@ STATIC_ROOT = '/home/100087/100087-dowelllegalpracticeapi/static'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+# CORS
 # https://github.com/adamchainz/django-cors-headers
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_URLS_REGEX = r"^/.*$"
+# CORS_URLS_REGEX = r"^/api/.*$"
+
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+
+# CORS_ALLOW_HEADERS = [
+#     "accept",
+#     "accept-encoding",
+#     "authorization",
+#     "content-type",
+#     "dnt",
+#     "origin",
+#     "user-agent",
+#     "x-csrftoken",
+#     "x-requested-with",
+# ]
 
 # CORS_ALLOWED_ORIGINS = [
 #     "https://example.com",
@@ -139,4 +163,6 @@ CORS_ORIGIN_ALLOW_ALL = True
 #     "http://localhost:8080",
 #     "http://127.0.0.1:9000",
 # ]
+
+
 

@@ -56,52 +56,52 @@
         
         <div class="content">
             <input type="checkbox" id="mobile-app-privacy-policy-summary" value="0">
-            <label for="mobile-app-privacy-policy-summary"> <a href="#">mobile-app-privacy-policy-summary</a></label><br>
+            <label for="mobile-app-privacy-policy-summary"> <a id="mobile-app-privacy-policy-summary-link" href="#">mobile-app-privacy-policy-summary</a></label><br>
         </div>
         
         <div class="content">
             <input type="checkbox" id="disclaimer"  value="0">
-            <label for="disclaimer"> <a href="#">disclaimer</a></label><br>
+            <label for="disclaimer"> <a id="disclaimer-link" href="#">disclaimer</a></label><br>
         </div>
         
         <div class="content">
             <input type="checkbox" id="website-privacy-policy" value="0">
-            <label for="website-privacy-policy"> <a href="#">website-privacy-policy</a></label><br>
+            <label for="website-privacy-policy"> <a id="website-privacy-policy-link" href="#">website-privacy-policy</a></label><br>
         </div>
         
         <div class="content">
             <input type="checkbox" id="cookies-policy" value="0">
-            <label for="cookies-policy"> <a href="#">cookies-policy</a></label><br>
+            <label for="cookies-policy"> <a id="cookies-policy-link" href="#">cookies-policy</a></label><br>
         </div>
         
         <div class="content">
             <input type="checkbox" id="terms-and-conditions"  value="0">
-            <label for="terms-and-conditions"> <a href="#">terms-and-conditions</a></label><br>
+            <label for="terms-and-conditions"> <a id="terms-and-conditions-link" href="#">terms-and-conditions</a></label><br>
         </div>
         
         <div class="content">
             <input type="checkbox" id="end-user-license-agreement" value="0">
-            <label for="end-user-license-agreement"> <a href="#">end-user-license-agreement</a></label><br>
+            <label for="end-user-license-agreement"> <a id="end-user-license-agreement-link" href="#">end-user-license-agreement</a></label><br>
         </div>
         
         <div class="content">
             <input type="checkbox" id="return-refund-policy" value="0">
-            <label for="return-refund-policy"> <a href="#">return-refund-policy</a></label><br>
+            <label for="return-refund-policy"> <a id="return-refund-policy-link" href="#">return-refund-policy</a></label><br>
         </div>
         
         <div class="content">
             <input type="checkbox" id="safety-disclaimer" value="0">
-            <label for="safety-disclaimer"> <a href="#">safety-disclaimer</a></label><br>
+            <label for="safety-disclaimer"> <a id="safety-disclaimer-link" href="#">safety-disclaimer</a></label><br>
         </div>
         
         <div class="content">
             <input type="checkbox" id="security-policy-for-wifi-qr-code" value="0">
-            <label for="security-policy-for-wifi-qr-code"> <a href="#">security-policy-for-wifi-qr-code</a></label><br>
+            <label for="security-policy-for-wifi-qr-code"> <a id="security-policy-for-wifi-qr-code-link" href="#">security-policy-for-wifi-qr-code</a></label><br>
         </div>
         
         <div class="content">
             <input type="checkbox" id="website-security-policy" value="0">
-            <label for="website-security-policy"> <a href="#">website-security-policy</a></label><br>
+            <label for="website-security-policy"> <a id="website-security-policy-link" href="#">website-security-policy</a></label><br>
         </div>
         
 
@@ -123,14 +123,17 @@
     const baseUrl = "https://100087.pythonanywhere.com/legalpolicies/"
     const baseApiUrl = "https://100087.pythonanywhere.com/api/legalpolicies/"
 
-    //const baseUrl = "http://127.0.0.1:8000/legalpolicies/"
+    // const baseUrl = "http://127.0.0.1:8000/legalpolicies/"
     // const baseApiUrl = "http://127.0.0.1:8000/api/legalpolicies/"
-    const displayRequestParam = () =>{
+
+    const displayRequestParam = (preId, linkId, policyType) =>{
+
         const sessionId = document.getElementById("session_id").value;
         const appEventId = document.getElementById("app_event_id").value;
         const redirectUrl = document.getElementById("redirect_url").value;
-        const preEl = document.getElementById("app-privacy-policy-pre");
-        const linkEl = document.getElementById("app-privacy-policy-link")
+        const preEl = document.getElementById(preId);
+        const linkEl = document.getElementById(linkId);
+
 
         localStorage.setItem("redirectUrl", redirectUrl);
         localStorage.setItem("sessionId", sessionId);
@@ -147,11 +150,27 @@
         - app_event_id=${appEventId} 
 
         GET/ Request url:
-        ${baseUrl}${appEventId}/app-privacy-policy/policies/?redirect_url=${redirectUrl}&session_id=${sessionId}
+        ${baseUrl}${appEventId}/${policyType}/policies/?redirect_url=${redirectUrl}&session_id=${sessionId}
 
         `
         preEl.innerHTML = content;
-        linkEl.setAttribute("href", `${baseUrl}${appEventId}/app-privacy-policy/policies/?redirect_url=${redirectUrl}&session_id=${sessionId}`)
+        linkEl.setAttribute("href", `${baseUrl}${appEventId}/${policyType}/policies/?redirect_url=${redirectUrl}&session_id=${sessionId}`)
+    }
+
+    const callDisplayRequestParam = () => {
+        
+        displayRequestParam("app-privacy-policy-pre", "mobile-app-privacy-policy-summary-link", "mobile-app-privacy-policy-summary");
+        displayRequestParam("app-privacy-policy-pre", "disclaimer-link", "disclaimer");
+        displayRequestParam("app-privacy-policy-pre", "website-privacy-policy-link", "website-privacy-policy");
+        displayRequestParam("app-privacy-policy-pre", "cookies-policy-link", "cookies-policy");
+        displayRequestParam("app-privacy-policy-pre", "terms-and-conditions-link", "terms-and-conditions");
+        displayRequestParam("app-privacy-policy-pre", "end-user-license-agreement-link", "end-user-license-agreement");
+        displayRequestParam("app-privacy-policy-pre", "return-refund-policy-link", "return-refund-policy");
+        displayRequestParam("app-privacy-policy-pre", "safety-disclaimer-link", "safety-disclaimer");
+        displayRequestParam("app-privacy-policy-pre", "security-policy-for-wifi-qr-code-link", "security-policy-for-wifi-qr-code");
+        displayRequestParam("app-privacy-policy-pre", "website-security-policy-link", "website-security-policy");
+        displayRequestParam("app-privacy-policy-pre", "app-privacy-policy-link", "app-privacy-policy");
+        
     }
 
 
@@ -160,8 +179,6 @@
         let sessionId = document.getElementById("session_id").value;
         let appEventId = document.getElementById("app_event_id").value;
         let redirectUrl = document.getElementById("redirect_url").value;
-        const preEl = document.getElementById("app-privacy-policy-pre");
-        const linkEl = document.getElementById("app-privacy-policy-link")
 
         if (localStorage.getItem("redirectUrl") === null) {
             localStorage.setItem("redirectUrl", redirectUrl);
@@ -185,26 +202,7 @@
             document.getElementById("app_event_id").value = appEventId;
         }
 
-
-
-        const content = `
-        GET /legalpolicies/{app_event_id}/{policy_type}/policies/?redirect_url={callbackurl}&session_id={session_id}
-
-        Query paramater:
-        - session_id=${sessionId}
-        - redirect_url=${redirectUrl}
-
-        Other paramater
-        - policy_type=app-privacy-policy
-        - app_event_id=${appEventId} 
-
-        GET Request url:
-        ${baseUrl}${appEventId}/app-privacy-policy/policies/?redirect_url=${redirectUrl}&session_id=${sessionId}
-
-        `
-        preEl.innerHTML = content;
-        linkEl.setAttribute("href", `${baseUrl}${appEventId}/app-privacy-policy/policies/?redirect_url=${redirectUrl}&session_id=${sessionId}`)
-
+        callDisplayRequestParam();
     }
 
 
@@ -247,9 +245,9 @@
 
     displayDefaultRequestParam();
     loadIagreeStatus();
-    document.getElementById("session_id").onkeyup = displayRequestParam;
-    document.getElementById("app_event_id").onkeyup = displayRequestParam;
-    document.getElementById("redirect_url").onkeyup = displayRequestParam;
+    document.getElementById("session_id").onkeyup = callDisplayRequestParam;
+    document.getElementById("app_event_id").onkeyup = callDisplayRequestParam;
+    document.getElementById("redirect_url").onkeyup = callDisplayRequestParam;
 
     
 </script>

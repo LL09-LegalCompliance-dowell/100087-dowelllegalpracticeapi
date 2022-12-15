@@ -1,6 +1,7 @@
 import os
 from django.shortcuts import redirect, render
 from django.http import JsonResponse, HttpResponse
+from django.views.decorators.clickjacking import xframe_options_exempt
 import jwt
 from rest_framework.views import APIView
 from rest_framework import status
@@ -209,6 +210,8 @@ def get_policy_template_name(policy:str) -> str:
         return "website-security-policy.html"
 
 
+
+@xframe_options_exempt
 def load_public_legal_policy(request, app_event_id:str, policy:str):
     try:
 

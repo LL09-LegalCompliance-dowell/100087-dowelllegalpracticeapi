@@ -18,9 +18,14 @@ document.addEventListener("DOMContentLoaded", function(){
         body: JSON.stringify({"i_agree": true}),
         headers: {"Content-Type": "application/json"}
       })
+      // .then(response => {
+      //     // Redirect user to previous page
+      //     window.location.href = redirectUrl;
+      // })
 
-      // Redirect user to previous page
       window.location.href = redirectUrl;
+
+
 
 
     }else {
