@@ -132,18 +132,19 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # CORS
+CORS_ORIGIN_ALLOW_ALL = True
 # https://github.com/adamchainz/django-cors-headers
-CORS_URLS_REGEX = r"^/.*$"
+# CORS_URLS_REGEX = r"^/.*$"
 # CORS_URLS_REGEX = r"^/api/.*$"
 
-CORS_ALLOW_METHODS = [
-    "DELETE",
-    "GET",
-    "OPTIONS",
-    "PATCH",
-    "POST",
-    "PUT",
-]
+# CORS_ALLOW_METHODS = [
+#     "DELETE",
+#     "GET",
+#     "OPTIONS",
+#     "PATCH",
+#     "POST",
+#     "PUT",
+# ]
 
 # CORS_ALLOW_HEADERS = [
 #     "accept",
