@@ -16,9 +16,9 @@
 <body>
 
 <div style="margin-bottom: 50px;" class="container">
-    <div class="row">
+    <div style="margin-top: 30px;" class="row">
 
-        <h1 style="margin-bottom: 100px;">Legal API Test Guide</h1>
+        <h2 style="margin-bottom: 100px;">Legal API Test Guide</h2>
 
         <div class="content">
             <form action="#">
@@ -39,7 +39,7 @@
             <input type="checkbox" id="app-privacy-policy" value="0">
             <label for="app-privacy-policy"> <a id="app-privacy-policy-link" href="#">app-privacy-policy</a></label><br>
         
-            <pre id="app-privacy-policy-pre">
+            <pre style="background-color: lightgray;" id="app-privacy-policy-pre">
                 Query paramater:
                 - session_id=ayaquq6jdyqvaq9h6dlm9ysu3wkykyx0
                 - redirect_url=http://127.0.0.1:8000/legalpolicies/testguides/
@@ -103,6 +103,56 @@
             <input type="checkbox" id="website-security-policy" value="0">
             <label for="website-security-policy"> <a id="website-security-policy-link" href="#">website-security-policy</a></label><br>
         </div>
+
+
+        <div style="margin-top: 50px;" class="content">
+            <h4>How to update policy checkbox code snippet</h4>
+            <pre style="background-color: lightgray;">
+
+                const baseUrl = "https://100087.pythonanywhere.com/legalpolicies/"
+                const baseApiUrl = "https://100087.pythonanywhere.com/api/legalpolicies/"
+
+                const loadIagreeStatus = () => {
+
+                    // Get session id
+                    let sessionId = document.getElementById("session_id").value;
+                    const url = `${baseApiUrl}${sessionId}/iagreestatus/`;
+            
+                    // Query server
+                    fetch(url, {
+                        method: "GET",
+                        headers: {"Content-Type": "application/json"}
+                    }).then(response => {
+            
+                        if (response.status === 200){
+                            
+                            return response.json();
+                        }
+            
+                    }).then(jsonData => {
+            
+                        console.log(jsonData);
+            
+                        for (let iAgreeData of jsonData.data){
+            
+                            // checked the policy checkbox
+                            // if i_agree is set to true
+                            if (iAgreeData.i_agree){
+            
+                                // policy type is used
+                                // as the checkbox element id 
+                                document.getElementById(iAgreeData.legal_policy_type).checked = true;
+                            }
+            
+                        }
+            
+                    })
+            
+            
+                }            
+
+            </pre>
+        </div>
         
 
 
@@ -123,8 +173,6 @@
     const baseUrl = "https://100087.pythonanywhere.com/legalpolicies/"
     const baseApiUrl = "https://100087.pythonanywhere.com/api/legalpolicies/"
 
-    // const baseUrl = "http://127.0.0.1:8000/legalpolicies/"
-    // const baseApiUrl = "http://127.0.0.1:8000/api/legalpolicies/"
 
     const displayRequestParam = (preId, linkId, policyType) =>{
 
@@ -208,9 +256,11 @@
 
     const loadIagreeStatus = () => {
 
+        // Get session id
         let sessionId = document.getElementById("session_id").value;
         const url = `${baseApiUrl}${sessionId}/iagreestatus/`;
 
+        // Query server
         fetch(url, {
             method: "GET",
             headers: {"Content-Type": "application/json"}
@@ -223,14 +273,21 @@
 
         }).then(jsonData => {
 
+            console.log(jsonData);
+
             for (let iAgreeData of jsonData.data){
 
+                // checked the policy checkbox
+                // if i_agree is set to true
                 if (iAgreeData.i_agree){
+
+                    // policy type is used
+                    // as the checkbox element id 
                     document.getElementById(iAgreeData.legal_policy_type).checked = true;
                 }
 
             }
-            console.log(jsonData);
+
         })
 
 
