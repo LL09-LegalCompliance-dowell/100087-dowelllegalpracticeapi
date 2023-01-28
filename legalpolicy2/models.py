@@ -14,6 +14,9 @@ class IAgreeToPolicyTracker(models.Model):
     def __repr__(self) -> str:
         return f"<IAgreeToPolicyTracker: session_id({self.session_id}), policy_request_id({self.policy_request_id}), i_agree({self.i_agree}), >"
 
+    def __str__(self) -> str:
+        return f"<IAgreeToPolicyTracker: session_id({self.session_id}), policy_request_id({self.policy_request_id}), i_agree({self.i_agree}), >"
+
 
     def format(self):
         return {
