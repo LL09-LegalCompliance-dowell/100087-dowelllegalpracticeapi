@@ -214,6 +214,14 @@
   <body class="c7 doc-content">
     <div id="wrap">
 
+      <!--BEGIN i agree message-->
+      <div id="i-agree-message-container" style="background-color: green; display: none;">
+        <div style="padding:20px;">
+          <p id="i-agree-message" style="color: white;"></p>
+        </div>
+      </div>
+      <!--BEGIN i agree message-->
+
       <p class="c0">
         <span class="c5">Disclaimer</span>
       </p>
@@ -229,8 +237,8 @@
         <span class="c3">You are solely responsible for any consequences, losses, or damages that we may directly or indirectly incur or suffer due to any unauthorized activities conducted by you, as explained above, and may incur criminal or civil liability.</span>
       </p>
   
-      <form style="margin-top:40px;" action="${redirect_url}" method="get">
-        <input id="agree-to-legal-policy-api" data-policy-request-id="${policy_request_id}" data-redirect-url="${redirect_url}" type="checkbox" name="agree-to-legal-policy-api" value="0">
+      <form id="igree-checkbox-form" style="margin-top:40px;" action="${redirect_url}" method="get">
+        <input id="agree-to-legal-policy-api" data-agreed-already-message="${agreed_already_message}" data-i-agree-status="${i_agree_status}" data-policy-request-id="${policy_request_id}" data-redirect-url="${redirect_url}" type="checkbox" name="agree-to-legal-policy-api" value="0">
         <label for="agree-to-legal-policy-api"> I agree</label><br><br>
       </form>
 

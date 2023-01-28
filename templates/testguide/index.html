@@ -48,8 +48,12 @@
                 - policy_type=app-privacy-policy
                 - app_event_id=FB1010000000001665306290565391 
         
-                GET/ Request url:
+                GET/ General Request url:
                 http://127.0.0.1:8000/legalpolicies/FB1010000000001665306290565391/app-privacy-policy/policies/?redirect_url=http://127.0.0.1:8000/legalpolicies/testguides/&session_id=ayaquq6jdyqvaq9h6dlm9ysu3wkykyx0
+
+
+                GET/ Iframe Request url:
+                http://127.0.0.1:8000/legalpolicies/FB1010000000001665306290565391/app-privacy-policy/policies/?session_id=ayaquq6jdyqvaq9h6dlm9ysu3wkykyx0
         
             </pre>
         </div>
@@ -199,6 +203,9 @@
 
         GET/ Request url:
         ${baseUrl}${appEventId}/${policyType}/policies/?redirect_url=${redirectUrl}&session_id=${sessionId}
+
+        GET/ Iframe Request url:
+        ${baseUrl}${appEventId}/${policyType}/policies/?session_id=${sessionId}
 
         `
         preEl.innerHTML = content;

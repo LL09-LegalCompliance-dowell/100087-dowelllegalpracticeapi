@@ -311,6 +311,14 @@
 
     <div id="wrap">
 
+      <!--BEGIN i agree message-->
+      <div id="i-agree-message-container" style="background-color: green; display: none;">
+        <div style="padding:20px;">
+          <p id="i-agree-message" style="color: white;"></p>
+        </div>
+      </div>
+      <!--BEGIN i agree message-->
+
 
       <p class="c11">
         <span class="c13">&nbsp; &nbsp;</span>
@@ -435,8 +443,8 @@
       </p>
   
   
-      <form style="margin-top:40px;" action="${redirect_url}" method="get">
-        <input id="agree-to-legal-policy-api" data-policy-request-id="${policy_request_id}" data-redirect-url="${redirect_url}" type="checkbox" name="agree-to-legal-policy-api" value="0">
+      <form id="igree-checkbox-form" style="margin-top:40px;" action="${redirect_url}" method="get">
+        <input id="agree-to-legal-policy-api" data-agreed-already-message="${agreed_already_message}" data-i-agree-status="${i_agree_status}" data-policy-request-id="${policy_request_id}" data-redirect-url="${redirect_url}" type="checkbox" name="agree-to-legal-policy-api" value="0">
         <label for="agree-to-legal-policy-api"> I agree</label><br><br>
       </form>
   
