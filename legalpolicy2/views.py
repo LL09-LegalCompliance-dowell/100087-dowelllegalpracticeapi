@@ -4,8 +4,11 @@ from utils.dowell import (
     fetch_document,
 
     LEGAL_POLICY_COLLECTION,
+    PRIVACY_CONSENT_COLLECTION,
     LEGAL_POLICY_DOCUMENT_NAME,
-    LEGAL_POLICY_KEY
+    PRIVACY_CONSENT_DOCUMENT_NAME,
+    LEGAL_POLICY_KEY,
+    PRIVACY_CONSENT_KEY
 )
 from dowelllegalpracticeapi.settings import BASE_DIR
 from django.http import HttpResponse
@@ -212,5 +215,7 @@ def load_public_legal_policy(request, app_event_id:str, policy:str):
     except Exception as err:
         print(str(err))
         return HttpResponse(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 
 

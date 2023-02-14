@@ -1,0 +1,34 @@
+{
+    "platform_type": "Privacy-Consent",
+    "consent_status_detail": {
+        "status": "Pending",
+        "datetime": null
+    },
+    "individual_providing_consent_detail": {
+        "name": "",
+        "address": "",
+        "signature": "",
+        "datetime": null
+    },
+    "company_name": "Consent Company",
+    "company_email": "consent@gmail.com",
+    "privacy_policy_personal_data_collected": [
+        "Name",
+        "Addresss"
+    ],
+    "consent_to_personal_data_usage": [
+        {
+            "description": "Marketing",
+            "status": false
+        },
+        {
+            "description": "Technical support",
+            "status": false
+        },
+        {
+            "description": "Research",
+            "status": false
+        }
+    ],
+    "privacy_policy_url": "http://website.com/privacy-policy"
+}
