@@ -290,6 +290,7 @@ class PrivacyConsentList(APIView):
                 fields={}
             )
 
+            response_json = PrivacyConsentList.add_document_url(request, response_json)
             return Response(response_json,
                             status=status.HTTP_200_OK
                             )
@@ -318,9 +319,8 @@ class PrivacyConsentList(APIView):
                     response_json,
                     status_code)
 
-            if status_code == 201:
-                response_json = PrivacyConsentList.format_date(response_json)
 
+            response_json = PrivacyConsentList.add_document_url(request, response_json)
             return Response(response_json, status=status_code)
 
         # The code below will
@@ -336,33 +336,19 @@ class PrivacyConsentList(APIView):
 
 
     @staticmethod
-    def format_date(data):
-        privacy_consent = data[PRIVACY_CONSENT_DOCUMENT_NAME]
-        if "created_datetime" in privacy_consent:
-            privacy_consent["created_datetime"] = privacy_consent["created_datetime"].isoformat()
-        if "last_updated_datetime" in privacy_consent:
-            privacy_consent["last_updated_datetime"] = privacy_consent["last_updated_datetime"].isoformat()
-
-
-        data[PRIVACY_CONSENT_DOCUMENT_NAME] = privacy_consent
-        return data
-
-
-    @staticmethod
     def add_document_url(request, response_data):
         data_list = response_data['data']
         new_data_list = []
-        # preview_doc_url
-        # download_doc_url
+
 
         for data in data_list:
             privacy_consent = data[PRIVACY_CONSENT_DOCUMENT_NAME]
 
-            privacy_consent['html_doc_url'] = request.build_absolute_uri(
-                reverse('load_public_agreement_compliance', kwargs={'event_id': data["eventId"]}))
+            privacy_consent['privacy_consent_url'] = request.build_absolute_uri(
+                reverse('load_privacy_consent', kwargs={'event_id': data["eventId"]}))
 
 
-            # add agreement to new data list
+            # add privacy consent to new data list
             data[PRIVACY_CONSENT_DOCUMENT_NAME] = privacy_consent
             new_data_list.append(data)
 
@@ -370,9 +356,6 @@ class PrivacyConsentList(APIView):
             response_data['data'] = new_data_list
 
         return response_data
-
-
-
 
 
     def create_privacy_consent(self, request_data, response_json, status_code):
@@ -412,6 +395,7 @@ class PrivacyConsentDetail(APIView):
                 fields={"eventId": event_id}
             )
 
+            response_json = PrivacyConsentList.add_document_url(request, response_json)
             return Response(response_json, status=status.HTTP_200_OK)
 
         # The code below will
@@ -440,6 +424,7 @@ class PrivacyConsentDetail(APIView):
                     status_code= status_code)
 
 
+            response_json = PrivacyConsentList.add_document_url(request, response_json)
             return Response(response_json, status=status_code)
 
 
@@ -480,6 +465,31 @@ class PrivacyConsentDetail(APIView):
         return response_json, status_code
 
 
+def format_content(data):
+
+    ### BENGIN  Statement Of Work
+    # freelancer access list
+    if "freelancer_access" in data:
+        content = ""
+        for access in data['freelancer_access']:
+            content += f'<li class="c0 li-bullet-0">{access}</li>'
+        
+        data['freelancer_access'] = content
+
+    # deliverables expected in this scope of work list
+    if "deliverables_expected_in_this_scope_of_work" in data:
+        content = ""
+        for scope in data['deliverables_expected_in_this_scope_of_work']:
+            content += f'<li class="c0 li-bullet-0">{scope}</li>'
+        
+        data['deliverables_expected_in_this_scope_of_work'] = content
+
+    ### END Statement Of Work
+
+
+    return data
+
+
 
 
 @xframe_options_exempt
@@ -501,7 +511,7 @@ def load_privacy_consent(request, event_id:str):
         content = read_template("privacy -consent-form.html")
 
         # replace placeholders in the template with actual values
-        # privacy_consent = format_content(privacy_consent)
+        privacy_consent = format_content(privacy_consent)
         content = content.substitute(**privacy_consent)
         # return html context
 
@@ -512,6 +522,8 @@ def load_privacy_consent(request, event_id:str):
     except Exception as err:
         print(str(err))
         return HttpResponse(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 
 
 

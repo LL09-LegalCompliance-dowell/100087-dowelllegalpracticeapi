@@ -108,6 +108,7 @@ class PrivacyConsentSerializer(serializers.Serializer):
     company_email = serializers.EmailField(required=True)
     privacy_policy_personal_data_collected = serializers.ListField(default=[])
     consent_to_personal_data_usage = serializers.ListField(default={}) # will be checkout by the receipient
+    company_website_url = serializers.URLField(required=True)
     privacy_policy_url = serializers.URLField(required=True)
 
 
@@ -150,13 +151,15 @@ class PrivacyConsentSerializer(serializers.Serializer):
 
 
         # Retrieve old data
-        old_data = fetch_document(
+        old_response_data = fetch_document(
             collection=PRIVACY_CONSENT_COLLECTION,
             document=PRIVACY_CONSENT_DOCUMENT_NAME,
             fields={"eventId": event_id}
         )
 
-        old_privacy_consent = old_data['data'][0][PRIVACY_CONSENT_DOCUMENT_NAME]
+        old_data = old_response_data['data']
+        print(old_data)
+        old_privacy_consent = old_data[0][PRIVACY_CONSENT_DOCUMENT_NAME]
 
         new_value={**old_privacy_consent, **validated_data}
 
@@ -174,6 +177,7 @@ class PrivacyConsentSerializer(serializers.Serializer):
             status_code = status.HTTP_200_OK
 
             old_data[0][PRIVACY_CONSENT_DOCUMENT_NAME] = new_value
-            response_data = old_data
+            old_response_data['data'] = old_data
+            response_data = old_response_data
 
         return response_data, status_code
