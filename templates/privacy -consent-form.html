@@ -447,7 +447,7 @@
 <body class="c3 doc-content">
 
 
-  <div id="wrap">
+  <div id="wrap" data-base-url="${base_url}">
 	<p class="c1"><span class="c8">&lt;dowell Company name and logo&gt;</span></p>
 	<p class="c0"><span class="c8"></span></p>
 	<p class="c0"><span class="c6"></span></p>
@@ -485,29 +485,45 @@
 
 	<p><input id="i-give-consent" type="checkbox" name="" value="0"> gives consent</p>
 
+	<!--BEGIN signature form-->
 	<div id="signature-details">
-		<p class="c0"><span class="c2"></span></p>
-		<p class="c0"><span class="c2"></span></p>
-		<p class="c0"><span class="c2"></span></p>
-		<p class="c1"><span class="c2">Name of Individual providing Consent: <input id="i-give-consent" type="text"></span></p>
-		<p class="c0"><span class="c2"></span></p>
-		<p class="c1"><span class="c2">Address of Individual providing Consent:  <input id="i-give-consent" type="text"></span></p>
-		<p class="c0"><span class="c2"></span></p>
-		<p class="c1"><span class="c2">Signature:  <input id="i-give-consent" type="file"></span></p>
-		<p class="c0"><span class="c2"></span></p>
-		<p class="c1"><span class="c2">Date of Signature: </span></p>
-		<p class="c0"><span class="c2"></span></p>
-		<p class="c0"><span class="c2"></span></p>
-		<p class="c0"><span class="c2"></span></p>
-		<p class="c0"><span class="c2"></span></p>
-		<p class="c0"><span class="c2"></span></p>
-		<p class="c1"><span>{Disclaimer: </span><span class="c13">We collect the information on this form solely for the purposes of licensing certain documents to you, per the terms prescribed on the website. All data is stored in accordance with our Privacy Policy. We do not sell or otherwise distribute personal information collected via this form to third parties, nor will you receive any marketing material, unless you have specifically opted in to receive such materials from us.}</span></p>
-		<p class="c0"><span class="c2"></span></p>
-		<p class="c0"><span class="c2"></span></p>
+		<form id="form">
+			<p class="c0"><span class="c2"></span></p>
+			<p class="c0"><span class="c2"></span></p>
+			<p class="c0"><span class="c2"></span></p>
+			<p class="c1">Name of Individual providing Consent:</p>
+			<p style="margin: 5px;" class="c1"><input id="i-give-consent" type="text"></p>
+			<p class="c0"><span class="c2"></span></p>
+			<p class="c1">Address of Individual providing Consent:</p>
+			<p style="margin: 5px;" class="c1"><input id="i-give-consent" type="text"></p>
+
+			<p class="c0"><span class="c2"></span></p>
+			<p class="c1"><span class="c2">Signature:  <input id="signature-image" type="file"></span></p>
+			<div  id="signature-image-container" style="margin: 20px; display: none;"><img id="signature-image-display" height="100" src="" /></div>
+			<p class="c0"><span class="c2"></span></p>
+			<p id="signature-date" style="margin: 5px; display: none;" class="c1"><span class="c2">Date of Signature: </span></p>
+			<p class="c0"><span class="c2"></span></p>
+			<p class="c0"><span class="c2"></span></p>
+
+			<button style="background-color: green; color: #ffffff; height: 35px; padding: auto;border-color: green;" id="btn-save-signature">Submit Consent</button>
+
+
+	    </form>
     </div>
+	<!--END signature form-->
+
+	<p class="c0"><span class="c2"></span></p>
+	<p class="c0"><span class="c2"></span></p>
+	<p class="c0"><span class="c2"></span></p>
+	<p class="c1"><span>{Disclaimer: </span><span class="c13">We collect the information on this form solely for the purposes of licensing certain documents to you, per the terms prescribed on the website. All data is stored in accordance with our Privacy Policy. We do not sell or otherwise distribute personal information collected via this form to third parties, nor will you receive any marketing material, unless you have specifically opted in to receive such materials from us.}</span></p>
+	<p class="c0"><span class="c2"></span></p>
+	<p class="c0"><span class="c2"></span></p>
+
 
 
   </div>
 </body>
 
+
+<script src="${base_url}/static/js/privacyconsent.js"></script>
 </html>

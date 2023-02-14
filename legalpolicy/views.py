@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.request import Request
+from django.conf import settings
 
 from utils.dowell import (
     fetch_document,
@@ -16,7 +17,8 @@ from utils.dowell import (
     LEGAL_POLICY_DOCUMENT_NAME,
     PRIVACY_CONSENT_DOCUMENT_NAME,
     LEGAL_POLICY_KEY,
-    PRIVACY_CONSENT_KEY
+    PRIVACY_CONSENT_KEY,
+    BASE_URL
 )
 from dowelllegalpracticeapi.settings import BASE_DIR
 from string import Template
@@ -512,8 +514,19 @@ def load_privacy_consent(request, event_id:str):
 
         # replace placeholders in the template with actual values
         privacy_consent = format_content(privacy_consent)
-        content = content.substitute(**privacy_consent)
-        # return html context
+
+        base_url = "http://127.0.0.1:8000" if settings.DEBUG else  BASE_URL
+        individual_providing_consent_detail = privacy_consent['individual_providing_consent_detail']
+        consent_status_detail = privacy_consent['consent_status_detail']
+
+        content = content.substitute(
+            **privacy_consent,
+            base_url=base_url,
+            **individual_providing_consent_detail,
+            consent_confirm= consent_status_detail['status'],
+            consent_datetime= consent_status_detail['datetime']
+            )
+
 
         return HttpResponse(content= content)
 

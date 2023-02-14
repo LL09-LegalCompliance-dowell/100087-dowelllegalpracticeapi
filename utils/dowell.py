@@ -36,6 +36,7 @@ CLUSTER = "license"
 RECORD_PER_PAGE = 10
 BASE_IMAGE_URL = "https://100087.pythonanywhere.com/media/img/"
 BASE_DOC_URL = "https://100087.pythonanywhere.com/media/doc/"
+BASE_URL =  "https://100087.pythonanywhere.com"
 
 
 def format_id(id):

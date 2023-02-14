@@ -1,7 +1,7 @@
 {
     "platform_type": "Privacy-Consent",
     "consent_status_detail": {
-        "status": "Pending",
+        "status": false,
         "datetime": null
     },
     "individual_providing_consent_detail": {
