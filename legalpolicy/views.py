@@ -468,13 +468,13 @@ class PrivacyConsentDetail(APIView):
 def format_content(data):
 
     ### BENGIN  Statement Of Work
-    # freelancer access list
-    if "freelancer_access" in data:
+    # privacy_policy_personal_data_collected list
+    if "privacy_policy_personal_data_collected" in data:
         content = ""
-        for access in data['freelancer_access']:
-            content += f'<li class="c0 li-bullet-0">{access}</li>'
+        for personal_data in data['privacy_policy_personal_data_collected']:
+            content += f'<li><span>&nbsp;<input type="checkbox" class="privacy_policy_personal_data_collected" data-description="{personal_data}"> {personal_data}</span></li>'
         
-        data['freelancer_access'] = content
+        data['privacy_policy_personal_data_collected'] = content
 
     # deliverables expected in this scope of work list
     if "deliverables_expected_in_this_scope_of_work" in data:

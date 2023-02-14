@@ -458,15 +458,14 @@
 	<p class="c0"><span class="c2"></span></p>
 	<p class="c1"><span>To Be Signed by Individuals Providing Personal Data to the </span> ${company_name} <span class="c2">who is the controller of your personal data. </span></p>
 	<p class="c0"><span class="c2"></span></p>
-	<p class="c1"><span>You may contact or by phone and email at: </span><span>[Insert Name and Contact Info of Person in Unit Requesting Personal Data_______________]. </span><sup><a href="#cmnt2" id="cmnt_ref2">[b]</a></sup></p>
+	<p class="c1"><span>You may contact or by phone and email at: </span><span>[Insert Name and Contact Info of Person in Unit Requesting Personal Data_______________]. </span></p>
 	<p class="c0"><span class="c2"></span></p>
 	<p class="c0"><span class="c2"></span></p>
 	<p class="c1"><span class="c2">Your personal data will be used for the following purposes (check all that apply):</span></p>
-	<ul class="c10 lst-kix_r4xrd0yuj6wj-0 start">
-		<li class="c5 li-bullet-0"><span class="c2">&nbsp;___ Marketing;</span></li>
-		<li class="c5 li-bullet-0"><span class="c2">&nbsp;___ Technical support; </span></li>
-		<li class="c5 li-bullet-0"><span class="c2">___ Research; </span></li>
-		<li class="c5 li-bullet-0"><span>___ Other [include a detailed description of the use of personal data]. </span><sup><a href="#cmnt3" id="cmnt_ref3">[c]</a></sup></li>
+	<ul style="list-style-type: none;" class="c10 lst-kix_r4xrd0yuj6wj-0 start">
+		${privacy_policy_personal_data_collected}
+		<li><span>&nbsp;<input type="checkbox" name="" value="0"> Marketing</span></li>
+		<li><span>&nbsp;<input type="checkbox" name="" value="0">  Other</span></li>
 	</ul>
 	<p class="c0"><span class="c2"></span></p>
 	<p class="c1"><span class="c2">The categories of personal data you are being asked to consent to the collection and use are your name, address, email address, telephone number, and [include a description of any other personal data collected]. will keep your personal data with the software where Dowell will collect, store and process your personal data and who are contractually obligated to keep your personal data confidential subject to appropriate safeguards to prevent it from unauthorized disclosure. Also intends to share your personal data with [identify all company units and third parties that will receive personal data]. </span></p>
@@ -482,22 +481,30 @@
 	<p class="c1"><span class="c2">Please [sign/electronically sign/check the box below], date, and return by [email/submit] the below:</span></p>
 	<p class="c0"><span class="c2"></span></p>
 	<p class="c1"><span class="c2">Privacy Consent Form I consent to use my personal data for the purposes described in this notice and understand that I can withdraw my consent at any time.</span></p>
-	<ul class="c10 lst-kix_tgd6zdeszbsx-0 start">
-		<li class="c5 c14 li-bullet-0"><span class="c2">___ gives consent &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span></li>
-		<li class="c5 li-bullet-0"><span>&nbsp;___ does not give consent </span><sup><a href="#cmnt6" id="cmnt_ref6">[f]</a></sup></li>
-	</ul>
-	<p class="c0"><span class="c2"></span></p>
-	<p class="c0"><span class="c2"></span></p>
-	<p class="c0"><span class="c2"></span></p>
-	<p class="c1"><span class="c2">Name of Individual providing Consent: _______________________________________________________ Address of Individual providing Consent: ______________________________________________________ Signature: ______________________________________________________________________________ Date of Signature:______________________________________________________________ </span></p>
-	<p class="c0"><span class="c2"></span></p>
-	<p class="c0"><span class="c2"></span></p>
-	<p class="c0"><span class="c2"></span></p>
-	<p class="c0"><span class="c2"></span></p>
-	<p class="c0"><span class="c2"></span></p>
-	<p class="c1"><span>{Disclaimer: </span><span class="c13">We collect the information on this form solely for the purposes of licensing certain documents to you, per the terms prescribed on the website. All data is stored in accordance with our Privacy Policy. We do not sell or otherwise distribute personal information collected via this form to third parties, nor will you receive any marketing material, unless you have specifically opted in to receive such materials from us.}</span></p>
-	<p class="c0"><span class="c2"></span></p>
-	<p class="c0"><span class="c2"></span></p>
+	<br/>
+
+	<p><input id="i-give-consent" type="checkbox" name="" value="0"> gives consent</p>
+
+	<div id="signature-details">
+		<p class="c0"><span class="c2"></span></p>
+		<p class="c0"><span class="c2"></span></p>
+		<p class="c0"><span class="c2"></span></p>
+		<p class="c1"><span class="c2">Name of Individual providing Consent: <input id="i-give-consent" type="text"></span></p>
+		<p class="c0"><span class="c2"></span></p>
+		<p class="c1"><span class="c2">Address of Individual providing Consent:  <input id="i-give-consent" type="text"></span></p>
+		<p class="c0"><span class="c2"></span></p>
+		<p class="c1"><span class="c2">Signature:  <input id="i-give-consent" type="file"></span></p>
+		<p class="c0"><span class="c2"></span></p>
+		<p class="c1"><span class="c2">Date of Signature: </span></p>
+		<p class="c0"><span class="c2"></span></p>
+		<p class="c0"><span class="c2"></span></p>
+		<p class="c0"><span class="c2"></span></p>
+		<p class="c0"><span class="c2"></span></p>
+		<p class="c0"><span class="c2"></span></p>
+		<p class="c1"><span>{Disclaimer: </span><span class="c13">We collect the information on this form solely for the purposes of licensing certain documents to you, per the terms prescribed on the website. All data is stored in accordance with our Privacy Policy. We do not sell or otherwise distribute personal information collected via this form to third parties, nor will you receive any marketing material, unless you have specifically opted in to receive such materials from us.}</span></p>
+		<p class="c0"><span class="c2"></span></p>
+		<p class="c0"><span class="c2"></span></p>
+    </div>
 
 
   </div>
