@@ -447,7 +447,7 @@
 <body class="c3 doc-content">
 
 
-  <div id="wrap" data-base-url="${base_url}">
+  <div id="wrap" data-base-url="${base_url}" data-event-id="${event_id}" data-is-locked="${is_locked}">
 	<p class="c1"><span class="c8">&lt;dowell Company name and logo&gt;</span></p>
 	<p class="c0"><span class="c8"></span></p>
 	<p class="c0"><span class="c6"></span></p>
@@ -486,27 +486,31 @@
 	<p><input id="i-give-consent" type="checkbox" name="" value="0"> gives consent</p>
 
 	<!--BEGIN signature form-->
-	<div id="signature-details">
+	<div style="display: none;" id="signature-details">
 		<form id="form">
-			<p class="c0"><span class="c2"></span></p>
-			<p class="c0"><span class="c2"></span></p>
-			<p class="c0"><span class="c2"></span></p>
-			<p class="c1">Name of Individual providing Consent:</p>
-			<p style="margin: 5px;" class="c1"><input id="i-give-consent" type="text"></p>
-			<p class="c0"><span class="c2"></span></p>
-			<p class="c1">Address of Individual providing Consent:</p>
-			<p style="margin: 5px;" class="c1"><input id="i-give-consent" type="text"></p>
 
 			<p class="c0"><span class="c2"></span></p>
-			<p class="c1"><span class="c2">Signature:  <input id="signature-image" type="file"></span></p>
-			<div  id="signature-image-container" style="margin: 20px; display: none;"><img id="signature-image-display" height="100" src="" /></div>
 			<p class="c0"><span class="c2"></span></p>
+			<p class="c0"><span class="c2"></span></p>
+			<p class="c1">Name of Individual providing Consent<span style="color: red;">*</span>: <input id="name-of-individua-providing-consent" type="text"></p>
+			<p id="name-error" style="color: red; display: none;">Name field required</p>
+			<p class="c0"><span class="c2"></span></p>
+
+			<p class="c1">Address of Individual providing Consent<span style="color: red;">*</span>: <input id="address-of-individua-providing-consent" type="text"></p>
+			<p id="address-error" style="color: red; display: none;">Address field required</p>
+
+			<p class="c0"><span class="c2"></span></p>
+			<p class="c1"><span class="c2">Signature<span style="color: red;">*</span>:  <input id="signature-image" accept="image/png, image/gif, image/jpeg, image/jeg"  type="file"></span></p>
+			<p id="signature-image-error" style="color: red; display: none;">Signature field required</p>
+
+			<div  id="signature-image-container" style="margin: 20px; display: none;"><img id="signature-image-display"  height="120" src="" /></div>
+			<p class="c0"><span class="c2"></span></p>
+
 			<p id="signature-date" style="margin: 5px; display: none;" class="c1"><span class="c2">Date of Signature: </span></p>
 			<p class="c0"><span class="c2"></span></p>
 			<p class="c0"><span class="c2"></span></p>
 
-			<button style="background-color: green; color: #ffffff; height: 35px; padding: auto;border-color: green;" id="btn-save-signature">Submit Consent</button>
-
+			<button style="background-color: green; color: #ffffff; height: 35px; padding: auto;border-color: green;" type="submit" id="btn-save-signature">Submit Consent</button>
 
 	    </form>
     </div>

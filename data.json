@@ -1,7 +1,7 @@
 {
     "platform_type": "Privacy-Consent",
     "consent_status_detail": {
-        "status": false,
+        "status": "Pending",
         "datetime": null
     },
     "individual_providing_consent_detail": {
@@ -30,5 +30,7 @@
             "status": false
         }
     ],
+    "is_locked": false,
     "privacy_policy_url": "http://website.com/privacy-policy"
+
 }

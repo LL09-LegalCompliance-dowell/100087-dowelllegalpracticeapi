@@ -147,6 +147,7 @@ class PrivacyConsentSerializer(serializers.Serializer):
 
         response_data = {}
         status_code = status.HTTP_422_UNPROCESSABLE_ENTITY
+        print(validated_data)
         validated_data['last_updated_datetime'] = datetime.utcnow().isoformat()
 
 
@@ -158,7 +159,6 @@ class PrivacyConsentSerializer(serializers.Serializer):
         )
 
         old_data = old_response_data['data']
-        print(old_data)
         old_privacy_consent = old_data[0][PRIVACY_CONSENT_DOCUMENT_NAME]
 
         new_value={**old_privacy_consent, **validated_data}

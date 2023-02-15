@@ -8,6 +8,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.request import Request
 from django.conf import settings
+from datetime import datetime
 
 from utils.dowell import (
     fetch_document,
@@ -417,13 +418,26 @@ class PrivacyConsentDetail(APIView):
             status_code = 500
 
 
+            action_type = ""
+            if "action_type" in request_data:
+                action_type = request_data['action_type']
 
-            if request_data['platform_type'] == "Privacy-Consent":
+
+            if action_type == "submit-signature":
+                response_json, status_code = self.submit_signature(
+                    event_id= event_id,
+                    request_data= request_data,
+                    response_json= response_json,
+                    status_code= status_code)
+
+
+            else:
                 response_json, status_code = self.update_privacy_consent(
                     event_id= event_id,
                     request_data= request_data,
                     response_json= response_json,
                     status_code= status_code)
+
 
 
             response_json = PrivacyConsentList.add_document_url(request, response_json)
@@ -442,6 +456,52 @@ class PrivacyConsentDetail(APIView):
             return Response(response_json, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+    def submit_signature(self, event_id, request_data, response_json, status_code):
+
+        # Retrieve old data
+        old_response_data = fetch_document(
+            collection=PRIVACY_CONSENT_COLLECTION,
+            document=PRIVACY_CONSENT_DOCUMENT_NAME,
+            fields={"eventId": event_id}
+        )
+
+        old_data = old_response_data['data']
+        new_privacy_consent = old_data[0][PRIVACY_CONSENT_DOCUMENT_NAME]
+
+        new_privacy_consent['consent_status_detail'] = {
+                "status": request_data['consent_status'],
+                "datetime": datetime.utcnow().isoformat()
+                }
+        new_privacy_consent['individual_providing_consent_detail'] = {
+                "name": request_data['name'],
+                "address": request_data['address'],
+                "signature": " ",
+                "datetime": datetime.utcnow().isoformat()
+                }
+        new_privacy_consent['is_locked'] = True
+
+        print(new_privacy_consent)
+
+
+        # Update and Commit data into database
+        serializer = PrivacyConsentSerializer(
+            event_id, data=new_privacy_consent)
+
+        if serializer.is_valid():
+            response_json, status_code = serializer.update(
+                event_id, serializer.validated_data)
+
+        else:
+            status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+            response_json = {
+                "isSuccess": False,
+                "message": [str(error) for error in serializer.errors],
+                "error": status_code
+            }
+
+
+        # return result
+        return response_json, status_code
 
 
     def update_privacy_consent(self, event_id, request_data, response_json, status_code):
@@ -458,7 +518,7 @@ class PrivacyConsentDetail(APIView):
             status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
             response_json = {
                 "isSuccess": False,
-                "message": [str(error) for error in serializer.amount.errors],
+                "message": [str(error) for error in serializer.errors],
                 "error": status_code
             }
 
@@ -520,6 +580,9 @@ def load_privacy_consent(request, event_id:str):
         consent_status_detail = privacy_consent['consent_status_detail']
 
         content = content.substitute(
+            is_locked= False,
+            company_website_url="",
+            event_id= event_id,
             **privacy_consent,
             base_url=base_url,
             **individual_providing_consent_detail,
