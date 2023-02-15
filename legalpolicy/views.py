@@ -417,6 +417,12 @@ class PrivacyConsentDetail(APIView):
             response_json = {}
             status_code = 500
 
+            # Retrieve old data
+            old_response_data = fetch_document(
+                collection=PRIVACY_CONSENT_COLLECTION,
+                document=PRIVACY_CONSENT_DOCUMENT_NAME,
+                fields={"eventId": event_id}
+            )
 
             action_type = ""
             if "action_type" in request_data:
@@ -425,7 +431,7 @@ class PrivacyConsentDetail(APIView):
 
             if action_type == "submit-signature":
                 response_json, status_code = self.submit_signature(
-                    event_id= event_id,
+                    old_privacy_consent_data= old_response_data,
                     request_data= request_data,
                     response_json= response_json,
                     status_code= status_code)
@@ -433,7 +439,7 @@ class PrivacyConsentDetail(APIView):
 
             else:
                 response_json, status_code = self.update_privacy_consent(
-                    event_id= event_id,
+                    old_privacy_consent_data= old_response_data,
                     request_data= request_data,
                     response_json= response_json,
                     status_code= status_code)
@@ -456,16 +462,11 @@ class PrivacyConsentDetail(APIView):
             return Response(response_json, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-    def submit_signature(self, event_id, request_data, response_json, status_code):
+    def submit_signature(self, old_privacy_consent_data, request_data, response_json, status_code):
 
-        # Retrieve old data
-        old_response_data = fetch_document(
-            collection=PRIVACY_CONSENT_COLLECTION,
-            document=PRIVACY_CONSENT_DOCUMENT_NAME,
-            fields={"eventId": event_id}
-        )
 
-        old_data = old_response_data['data']
+
+        old_data = old_privacy_consent_data['data']
         new_privacy_consent = old_data[0][PRIVACY_CONSENT_DOCUMENT_NAME]
 
         new_privacy_consent['consent_status_detail'] = {
@@ -475,21 +476,19 @@ class PrivacyConsentDetail(APIView):
         new_privacy_consent['individual_providing_consent_detail'] = {
                 "name": request_data['name'],
                 "address": request_data['address'],
-                "signature": " ",
+                "signature": request_data['signature'],
                 "datetime": datetime.utcnow().isoformat()
                 }
         new_privacy_consent['is_locked'] = True
 
-        print(new_privacy_consent)
-
 
         # Update and Commit data into database
         serializer = PrivacyConsentSerializer(
-            event_id, data=new_privacy_consent)
+            old_privacy_consent_data, data=new_privacy_consent)
 
         if serializer.is_valid():
             response_json, status_code = serializer.update(
-                event_id, serializer.validated_data)
+                old_privacy_consent_data, serializer.validated_data)
 
         else:
             status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -504,15 +503,15 @@ class PrivacyConsentDetail(APIView):
         return response_json, status_code
 
 
-    def update_privacy_consent(self, event_id, request_data, response_json, status_code):
+    def update_privacy_consent(self, old_privacy_consent_data, request_data, response_json, status_code):
 
         # Update and Commit data into database
         serializer = PrivacyConsentSerializer(
-            event_id, data=request_data)
+            old_privacy_consent_data, data=request_data)
 
         if serializer.is_valid():
             response_json, status_code = serializer.update(
-                event_id, serializer.validated_data)
+                old_privacy_consent_data, serializer.validated_data)
 
         else:
             status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -534,17 +533,17 @@ def format_content(data):
     if "privacy_policy_personal_data_collected" in data:
         content = ""
         for personal_data in data['privacy_policy_personal_data_collected']:
-            content += f'<li><span>&nbsp;<input type="checkbox" class="privacy_policy_personal_data_collected" data-description="{personal_data}"> {personal_data}</span></li>'
+            content += f'{personal_data},'
         
         data['privacy_policy_personal_data_collected'] = content
 
     # deliverables expected in this scope of work list
-    if "deliverables_expected_in_this_scope_of_work" in data:
+    if "consent_to_personal_data_usage" in data:
         content = ""
-        for scope in data['deliverables_expected_in_this_scope_of_work']:
-            content += f'<li class="c0 li-bullet-0">{scope}</li>'
+        for usage in data['consent_to_personal_data_usage']:
+            content += f'<p><span>&nbsp;<input type="checkbox" class="privacy_policy_personal_data_collected" data-description="{usage["description"]}"> {usage["description"]}</span></p>'
         
-        data['deliverables_expected_in_this_scope_of_work'] = content
+        data['consent_to_personal_data_usage'] = content
 
     ### END Statement Of Work
 
@@ -579,9 +578,14 @@ def load_privacy_consent(request, event_id:str):
         individual_providing_consent_detail = privacy_consent['individual_providing_consent_detail']
         consent_status_detail = privacy_consent['consent_status_detail']
 
+
+        if "is_locked" not in privacy_consent:
+            privacy_consent['is_locked'] = False
+        if "company_website_url" not in privacy_consent:
+            privacy_consent['company_website_url'] = ""
+
+
         content = content.substitute(
-            is_locked= False,
-            company_website_url="",
             event_id= event_id,
             **privacy_consent,
             base_url=base_url,

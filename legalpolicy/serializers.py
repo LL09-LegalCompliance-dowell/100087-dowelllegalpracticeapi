@@ -143,22 +143,14 @@ class PrivacyConsentSerializer(serializers.Serializer):
         return response_data, status_code
 
 
-    def update(self, event_id, validated_data):
+    def update(self, old_privacy_consent_data, validated_data):
 
         response_data = {}
         status_code = status.HTTP_422_UNPROCESSABLE_ENTITY
-        print(validated_data)
         validated_data['last_updated_datetime'] = datetime.utcnow().isoformat()
 
 
-        # Retrieve old data
-        old_response_data = fetch_document(
-            collection=PRIVACY_CONSENT_COLLECTION,
-            document=PRIVACY_CONSENT_DOCUMENT_NAME,
-            fields={"eventId": event_id}
-        )
-
-        old_data = old_response_data['data']
+        old_data = old_privacy_consent_data['data']
         old_privacy_consent = old_data[0][PRIVACY_CONSENT_DOCUMENT_NAME]
 
         new_value={**old_privacy_consent, **validated_data}
@@ -169,7 +161,7 @@ class PrivacyConsentSerializer(serializers.Serializer):
             document=PRIVACY_CONSENT_DOCUMENT_NAME,
             key=PRIVACY_CONSENT_KEY,
             new_value=new_value,
-            event_id=event_id
+            event_id=old_data[0]['eventId']
         )
 
         # Retrieve app/website detail from database
@@ -177,7 +169,7 @@ class PrivacyConsentSerializer(serializers.Serializer):
             status_code = status.HTTP_200_OK
 
             old_data[0][PRIVACY_CONSENT_DOCUMENT_NAME] = new_value
-            old_response_data['data'] = old_data
-            response_data = old_response_data
+            old_privacy_consent_data['data'] = old_data
+            response_data = old_privacy_consent_data
 
         return response_data, status_code

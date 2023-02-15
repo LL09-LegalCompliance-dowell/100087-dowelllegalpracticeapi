@@ -458,14 +458,13 @@
 	<p class="c0"><span class="c2"></span></p>
 	<p class="c1"><span>To Be Signed by Individuals Providing Personal Data to the </span> ${company_name} <span class="c2">who is the controller of your personal data. </span></p>
 	<p class="c0"><span class="c2"></span></p>
-	<p class="c1"><span>You may contact or by phone and email at: </span><span>[Insert Name and Contact Info of Person in Unit Requesting Personal Data_______________]. </span></p>
+	<p class="c1"><span>You may contact or by phone and email at: ${company_email}</span> <span>[${privacy_policy_personal_data_collected}]. </span></p>
 	<p class="c0"><span class="c2"></span></p>
 	<p class="c0"><span class="c2"></span></p>
 	<p class="c1"><span class="c2">Your personal data will be used for the following purposes (check all that apply):</span></p>
 	<ul style="list-style-type: none;" class="c10 lst-kix_r4xrd0yuj6wj-0 start">
-		${privacy_policy_personal_data_collected}
-		<li><span>&nbsp;<input type="checkbox" name="" value="0"> Marketing</span></li>
-		<li><span>&nbsp;<input type="checkbox" name="" value="0">  Other</span></li>
+		${consent_to_personal_data_usage}
+		<p><span>&nbsp;<input type="checkbox" id="other-usage-for-personal-data">  Other</span></p>
 	</ul>
 	<p class="c0"><span class="c2"></span></p>
 	<p class="c1"><span class="c2">The categories of personal data you are being asked to consent to the collection and use are your name, address, email address, telephone number, and [include a description of any other personal data collected]. will keep your personal data with the software where Dowell will collect, store and process your personal data and who are contractually obligated to keep your personal data confidential subject to appropriate safeguards to prevent it from unauthorized disclosure. Also intends to share your personal data with [identify all company units and third parties that will receive personal data]. </span></p>
@@ -485,6 +484,27 @@
 
 	<p><input id="i-give-consent" type="checkbox" name="" value="0"> gives consent</p>
 
+	<!--BEGIN display signature details-->
+	<div style="display: none;" id="signature-details-display">
+
+			<p class="c0"><span class="c2"></span></p>
+			<p class="c0"><span class="c2"></span></p>
+			<p class="c0"><span class="c2"></span></p>
+			<p class="c1">Name of Individual providing Consent: <strong>${name}</strong></p>
+			<p class="c0"><span class="c2"></span></p>
+
+			<p class="c1">Address of Individual providing Consent: <strong>${address}</strong></p>
+			<p class="c0"><span class="c2"></span></p>
+			<p class="c1"><span class="c2">Signature:</p>
+			<div><img height="120" src="data:image/png;base64,${signature}" /></div>
+			<p class="c0"><span class="c2"></span></p>
+
+			<p class="c1"><span class="c2">Date of Signature: <strong>${datetime}</strong></span></p>
+			<p class="c0"><span class="c2"></span></p>
+			<p class="c0"><span class="c2"></span></p>
+    </div>
+	<!--END display signature details-->
+
 	<!--BEGIN signature form-->
 	<div style="display: none;" id="signature-details">
 		<form id="form">
@@ -500,10 +520,10 @@
 			<p id="address-error" style="color: red; display: none;">Address field required</p>
 
 			<p class="c0"><span class="c2"></span></p>
-			<p class="c1"><span class="c2">Signature<span style="color: red;">*</span>:  <input id="signature-image" accept="image/png, image/gif, image/jpeg, image/jeg"  type="file"></span></p>
+			<p id="signature-field-container" class="c1"><span class="c2">Signature<span style="color: red;">*</span>:  <input id="signature-image" accept="image/png, image/gif, image/jpeg, image/jeg"  type="file"></span></p>
 			<p id="signature-image-error" style="color: red; display: none;">Signature field required</p>
 
-			<div  id="signature-image-container" style="margin: 20px; display: none;"><img id="signature-image-display"  height="120" src="" /></div>
+			<div  id="signature-image-container" style="margin: 20px; display: none;"><img id="signature-image-display"  height="120" src="data:image/png;base64,${signature}" /></div>
 			<p class="c0"><span class="c2"></span></p>
 
 			<p id="signature-date" style="margin: 5px; display: none;" class="c1"><span class="c2">Date of Signature: </span></p>

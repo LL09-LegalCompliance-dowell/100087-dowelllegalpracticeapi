@@ -10,9 +10,11 @@ const signatureDate = document.getElementById("signature-date");
 document.addEventListener("DOMContentLoaded", function(){
   const wrapEl = document.getElementById("wrap");
   const isLocked = wrapEl.getAttribute("data-is-locked");
-  if (isLocked === "true"){
+  if (isLocked === "True"){
+    document.getElementById("i-give-consent").checked = true;
     document.getElementById('i-give-consent').disabled = true;
     document.getElementById('i-give-consent').readOnly = true;
+    document.getElementById("signature-details-display").style.display = "block";
   }
 })
 
@@ -50,6 +52,9 @@ document.getElementById("i-give-consent").addEventListener('click', function() {
     }else{
         document.getElementById("signature-details").style.display = "none";
     }
+
+
+
 });
 
 
@@ -58,6 +63,10 @@ document.getElementById("form").addEventListener('submit', function(event) {
     event.preventDefault();
 
     if (validateInput()){
+
+      const btnSaveSignature = document.getElementById("btn-save-signature");
+      btnSaveSignature.innerHTML = "Saving ...";
+      btnSaveSignature.disabled = true;
 
       const wrapEl = document.getElementById("wrap");
       const eventId = wrapEl.getAttribute("data-event-id");
@@ -83,10 +92,17 @@ document.getElementById("form").addEventListener('submit', function(event) {
         if (res.status === 200){
 
           // disable give consent
+          document.getElementById("signature-field-container").style.display = "none";
           document.getElementById('i-give-consent').disabled = true;
           document.getElementById('i-give-consent').readOnly = true;
+          document.getElementById("name-of-individua-providing-consent").readOnly = true;
+          document.getElementById("address-of-individua-providing-consent").readOnly = true;
+          document.getElementById("btn-save-signature").remove();
+          
 
         }else{
+          btnSaveSignature.disabled = false;
+          btnSaveSignature.innerHTML = "Submit Consent";
           return res.json();
         }
 
