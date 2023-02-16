@@ -110,6 +110,7 @@ class PrivacyConsentSerializer(serializers.Serializer):
     consent_to_personal_data_usage = serializers.ListField(default={}) # will be checkout by the receipient
     company_website_url = serializers.URLField(required=True)
     privacy_policy_url = serializers.URLField(required=True)
+    is_locked = serializers.BooleanField(default=False)
 
 
     def create(self, validated_data):
@@ -139,7 +140,6 @@ class PrivacyConsentSerializer(serializers.Serializer):
                 }
             )
 
-        print(response_data)
         return response_data, status_code
 
 
@@ -152,6 +152,7 @@ class PrivacyConsentSerializer(serializers.Serializer):
 
         old_data = old_privacy_consent_data['data']
         old_privacy_consent = old_data[0][PRIVACY_CONSENT_DOCUMENT_NAME]
+
 
         new_value={**old_privacy_consent, **validated_data}
 

@@ -464,7 +464,11 @@ class PrivacyConsentDetail(APIView):
 
     def submit_signature(self, old_privacy_consent_data, request_data, response_json, status_code):
 
-
+        print(request_data)
+        print(" ")
+        print(" ")
+        print(" ")
+        print(" ")
 
         old_data = old_privacy_consent_data['data']
         new_privacy_consent = old_data[0][PRIVACY_CONSENT_DOCUMENT_NAME]
@@ -480,6 +484,19 @@ class PrivacyConsentDetail(APIView):
                 "datetime": datetime.utcnow().isoformat()
                 }
         new_privacy_consent['is_locked'] = True
+
+        # Update consent to personal data usage
+        count = 0
+        for usage in new_privacy_consent['consent_to_personal_data_usage']:
+
+            if usage['description'] in request_data['personal_data_usage']:
+                # Update status
+                new_privacy_consent['consent_to_personal_data_usage'][count]['status'] = True
+            else:
+                new_privacy_consent['consent_to_personal_data_usage'][count]['status'] = False
+
+            count += 1
+        
 
 
         # Update and Commit data into database
@@ -541,7 +558,10 @@ def format_content(data):
     if "consent_to_personal_data_usage" in data:
         content = ""
         for usage in data['consent_to_personal_data_usage']:
-            content += f'<p><span>&nbsp;<input type="checkbox" class="privacy_policy_personal_data_collected" data-description="{usage["description"]}"> {usage["description"]}</span></p>'
+            if usage['status']:
+                content += f'<p><span>&nbsp;<input type="checkbox" checked class="consent-to-personal-data-usage" data-description="{usage["description"]}"> {usage["description"]}</span></p>'
+            else:
+                content += f'<p><span>&nbsp;<input type="checkbox" class="consent-to-personal-data-usage" data-description="{usage["description"]}"> {usage["description"]}</span></p>'
         
         data['consent_to_personal_data_usage'] = content
 

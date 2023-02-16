@@ -58,6 +58,19 @@ document.getElementById("i-give-consent").addEventListener('click', function() {
 });
 
 
+document.getElementById("i-give-consent").addEventListener('click', function() {
+  if (this.checked){
+      document.getElementById("signature-details").style.display = "block";
+  }else{
+      document.getElementById("signature-details").style.display = "none";
+  }
+
+
+
+});
+
+
+
 // listen to the signature form submition
 document.getElementById("form").addEventListener('submit', function(event) {
     event.preventDefault();
@@ -80,7 +93,8 @@ document.getElementById("form").addEventListener('submit', function(event) {
         name: name,
         address: address,
         signature: base64String,
-        consent_status: "Confirmed"
+        consent_status: "Confirmed",
+        personal_data_usage: getPersonalDataUsage()
       };
 
       fetch(`${baseUrl}/api/privacyconsents/${eventId}/`,{
@@ -146,3 +160,22 @@ const validateInput = () => {
   return isValid;
 
 }
+
+
+
+const getPersonalDataUsage = () => {
+  let data = []
+  const personsalDataUsageEl = document.querySelectorAll(".consent-to-personal-data-usage");
+  personsalDataUsageEl.forEach(element => {
+    const description = element.getAttribute("data-description");
+    if( element.checked ){
+      data.push(description);
+    }
+  })
+
+
+  return data;
+}
+
+
+

@@ -301,6 +301,436 @@ The API will return three error types when requests fail:
 
 
 
+### Privacy Consent
+
+#### GET /api/privacyconsents/
+
+### Response
+- Return 200 OK
+
+```
+{
+    "isSuccess": true,
+    "data": [
+        {
+            "_id": "63edcf040f003236f907a88f",
+            "eventId": "FB1010000000167652939652613933",
+            "privacy_consent_policies": {
+                "platform_type": "Privacy-Consent",
+                "consent_status_detail": {
+                    "status": "Pending",
+                    "datetime": null
+                },
+                "individual_providing_consent_detail": {
+                    "name": "",
+                    "address": "",
+                    "signature": "",
+                    "datetime": null
+                },
+                "company_name": "Consent Company",
+                "company_email": "consent@gmail.com",
+                "privacy_policy_personal_data_collected": [
+                    "Name",
+                    "Addresss"
+                ],
+                "consent_to_personal_data_usage": [
+                    {
+                        "description": "Marketing",
+                        "status": false
+                    },
+                    {
+                        "description": "Technical support",
+                        "status": false
+                    },
+                    {
+                        "description": "Research",
+                        "status": false
+                    }
+                ],
+                "company_website_url": "http://website.com/",
+                "privacy_policy_url": "http://website.com/privacy-policy",
+                "is_locked": false,
+                "created_datetime": "2023-02-16T06:35:31.831460",
+                "last_updated_datetime": "2023-02-16T06:35:31.831470",
+                "privacy_consent_url": "http://127.0.0.1:8000/privacyconsents/FB1010000000167652939652613933/"
+            }
+        }
+    ]
+}
+```
+
+
+#### POST /api/privacyconsents/
+
+### Request body
+```
+{
+    "platform_type": "Privacy-Consent",
+    "consent_status_detail": {
+        "status": "Pending",
+        "datetime": null
+    },
+    "individual_providing_consent_detail": {
+        "name": "",
+        "address": "",
+        "signature": "",
+        "datetime": null
+    },
+    "company_name": "Consent Company",
+    "company_email": "consent@gmail.com",
+    "privacy_policy_personal_data_collected": [
+        "Name",
+        "Addresss"
+    ],
+    "consent_to_personal_data_usage": [
+        {
+            "description": "Marketing",
+            "status": false
+        },
+        {
+            "description": "Technical support",
+            "status": false
+        },
+        {
+            "description": "Research",
+            "status": false
+        }
+    ],
+    "is_locked": false,
+    "company_website_url": "http://website.com/",
+    "privacy_policy_url": "http://website.com/privacy-policy"
+
+}
+
+```
+
+### Response
+- Return 200 OK
+
+```
+{
+    "isSuccess": true,
+    "data": [
+        {
+            "_id": "63edcf040f003236f907a88f",
+            "eventId": "FB1010000000167652939652613933",
+            "privacy_consent_policies": {
+                "platform_type": "Privacy-Consent",
+                "consent_status_detail": {
+                    "status": "Pending",
+                    "datetime": null
+                },
+                "individual_providing_consent_detail": {
+                    "name": "",
+                    "address": "",
+                    "signature": "",
+                    "datetime": null
+                },
+                "company_name": "Consent Company",
+                "company_email": "consent@gmail.com",
+                "privacy_policy_personal_data_collected": [
+                    "Name",
+                    "Addresss"
+                ],
+                "consent_to_personal_data_usage": [
+                    {
+                        "description": "Marketing",
+                        "status": false
+                    },
+                    {
+                        "description": "Technical support",
+                        "status": false
+                    },
+                    {
+                        "description": "Research",
+                        "status": false
+                    }
+                ],
+                "company_website_url": "http://website.com/",
+                "privacy_policy_url": "http://website.com/privacy-policy",
+                "is_locked": false,
+                "created_datetime": "2023-02-16T06:35:31.831460",
+                "last_updated_datetime": "2023-02-16T06:35:31.831470",
+                "privacy_consent_url": "http://127.0.0.1:8000/privacyconsents/FB1010000000167652939652613933/"
+            }
+        }
+    ]
+}
+```
+
+
+
+#### GET /api/privacyconsents/{event_id}/
+
+### Response
+- Return 200 OK
+
+```
+{
+    "isSuccess": true,
+    "data": [
+        {
+            "_id": "63edcf040f003236f907a88f",
+            "eventId": "FB1010000000167652939652613933",
+            "privacy_consent_policies": {
+                "platform_type": "Privacy-Consent",
+                "consent_status_detail": {
+                    "status": "Pending",
+                    "datetime": null
+                },
+                "individual_providing_consent_detail": {
+                    "name": "",
+                    "address": "",
+                    "signature": "",
+                    "datetime": null
+                },
+                "company_name": "Consent Company",
+                "company_email": "consent@gmail.com",
+                "privacy_policy_personal_data_collected": [
+                    "Name",
+                    "Addresss"
+                ],
+                "consent_to_personal_data_usage": [
+                    {
+                        "description": "Marketing",
+                        "status": false
+                    },
+                    {
+                        "description": "Technical support",
+                        "status": false
+                    },
+                    {
+                        "description": "Research",
+                        "status": false
+                    }
+                ],
+                "company_website_url": "http://website.com/",
+                "privacy_policy_url": "http://website.com/privacy-policy",
+                "is_locked": false,
+                "created_datetime": "2023-02-16T06:35:31.831460",
+                "last_updated_datetime": "2023-02-16T06:35:31.831470",
+                "privacy_consent_url": "http://127.0.0.1:8000/privacyconsents/FB1010000000167652939652613933/"
+            }
+        }
+    ]
+}
+```
+
+
+#### PUT /api/privacyconsents/{event_id}/
+
+### Request body
+```
+{
+    "platform_type": "Privacy-Consent",
+    "consent_status_detail": {
+        "status": "Pending",
+        "datetime": null
+    },
+    "individual_providing_consent_detail": {
+        "name": "",
+        "address": "",
+        "signature": "",
+        "datetime": null
+    },
+    "company_name": "Consent Company",
+    "company_email": "consent@gmail.com",
+    "privacy_policy_personal_data_collected": [
+        "Name",
+        "Addresss"
+    ],
+    "consent_to_personal_data_usage": [
+        {
+            "description": "Marketing",
+            "status": false
+        },
+        {
+            "description": "Technical support",
+            "status": false
+        },
+        {
+            "description": "Research",
+            "status": false
+        }
+    ],
+    "is_locked": false,
+    "company_website_url": "http://website.com/",
+    "privacy_policy_url": "http://website.com/privacy-policy"
+
+}
+
+```
+
+### Response
+- Return 200 OK
+
+```
+{
+    "isSuccess": true,
+    "data": [
+        {
+            "_id": "63edcf040f003236f907a88f",
+            "eventId": "FB1010000000167652939652613933",
+            "privacy_consent_policies": {
+                "platform_type": "Privacy-Consent",
+                "consent_status_detail": {
+                    "status": "Pending",
+                    "datetime": null
+                },
+                "individual_providing_consent_detail": {
+                    "name": "",
+                    "address": "",
+                    "signature": "",
+                    "datetime": null
+                },
+                "company_name": "Consent Company",
+                "company_email": "consent@gmail.com",
+                "privacy_policy_personal_data_collected": [
+                    "Name",
+                    "Addresss"
+                ],
+                "consent_to_personal_data_usage": [
+                    {
+                        "description": "Marketing",
+                        "status": false
+                    },
+                    {
+                        "description": "Technical support",
+                        "status": false
+                    },
+                    {
+                        "description": "Research",
+                        "status": false
+                    }
+                ],
+                "company_website_url": "http://website.com/",
+                "privacy_policy_url": "http://website.com/privacy-policy",
+                "is_locked": false,
+                "created_datetime": "2023-02-16T06:35:31.831460",
+                "last_updated_datetime": "2023-02-16T06:35:31.831470",
+                "privacy_consent_url": "http://127.0.0.1:8000/privacyconsents/FB1010000000167652939652613933/"
+            }
+        }
+    ]
+}
+```
+
+
+
+#### PUT /api/privacyconsents/{event_id}/
+Upload consent personal details and signature
+
+### Request body
+```
+{
+    "platform_type": "Privacy-Consent",
+    "consent_status_detail": {
+        "status": "Pending",
+        "datetime": null
+    },
+    "individual_providing_consent_detail": {
+        "name": "",
+        "address": "",
+        "signature": "",
+        "datetime": null
+    },
+    "company_name": "Consent Company",
+    "company_email": "consent@gmail.com",
+    "privacy_policy_personal_data_collected": [
+        "Name",
+        "Addresss"
+    ],
+    "consent_to_personal_data_usage": [
+        {
+            "description": "Marketing",
+            "status": false
+        },
+        {
+            "description": "Technical support",
+            "status": false
+        },
+        {
+            "description": "Research",
+            "status": false
+        }
+    ],
+    "is_locked": false,
+    "company_website_url": "http://website.com/",
+    "privacy_policy_url": "http://website.com/privacy-policy"
+
+}
+
+```
+
+### Response
+- Return 200 OK
+
+```
+{
+    "isSuccess": true,
+    "data": [
+        {
+            "_id": "63edcf040f003236f907a88f",
+            "eventId": "FB1010000000167652939652613933",
+            "privacy_consent_policies": {
+                "platform_type": "Privacy-Consent",
+                "consent_status_detail": {
+                    "status": "Confirmed",
+                    "datetime": "2023-02-16T06:52:03.178389"
+                },
+                "individual_providing_consent_detail": {
+                    "name": "worlako test 3",
+                    "address": "india",
+                    "signature": "iVBORw0KGgoAAAANSUhEUgAABMwAAAK ...",
+                    "datetime": "2023-02-16T06:52:03.178407"
+                },
+                "company_name": "Consent Company",
+                "company_email": "consent@gmail.com",
+                "privacy_policy_personal_data_collected": [
+                    "Name",
+                    "Addresss"
+                ],
+                "consent_to_personal_data_usage": [
+                    {
+                        "description": "Marketing",
+                        "status": true
+                    },
+                    {
+                        "description": "Technical support",
+                        "status": false
+                    },
+                    {
+                        "description": "Research",
+                        "status": true
+                    }
+                ],
+                "company_website_url": "http://website.com/",
+                "privacy_policy_url": "http://website.com/privacy-policy",
+                "is_locked": true,
+                "created_datetime": "2023-02-16T06:35:31.831460",
+                "last_updated_datetime": "2023-02-16T06:52:03.261666",
+                "privacy_consent_url": "http://127.0.0.1:8000/privacyconsents/FB1010000000167652939652613933/"
+            }
+        }
+    ]
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ### Types of Policy
 - [app-privacy-policy](https://100087.pythonanywhere.com/policy/FB1010000000001665306290565391/app-privacy-policy/)
 - [mobile-app-privacy-policy-summary](https://100087.pythonanywhere.com/policy/FB1010000000001665306290565391/mobile-app-privacy-policy-summary/)

@@ -31,6 +31,7 @@
         }
     ],
     "is_locked": false,
+    "company_website_url": "http://website.com/",
     "privacy_policy_url": "http://website.com/privacy-policy"
 
 }
