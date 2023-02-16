@@ -111,6 +111,7 @@ class PrivacyConsentSerializer(serializers.Serializer):
     company_website_url = serializers.URLField(required=True)
     privacy_policy_url = serializers.URLField(required=True)
     is_locked = serializers.BooleanField(default=False)
+    other_usage_of_personal_data = serializers.CharField(max_length=500, allow_blank=True, required=True)
 
 
     def create(self, validated_data):

@@ -5,22 +5,49 @@ const signatureImage = document.getElementById('signature-image');
 const signatureImageDisplay = document.getElementById('signature-image-display');
 const signatureImageContainer = document.getElementById("signature-image-container");
 const signatureDate = document.getElementById("signature-date");
+const otherUsage = document.getElementById("other-usage-for-personal-data-input-display")
+
 
 
 document.addEventListener("DOMContentLoaded", function(){
   const wrapEl = document.getElementById("wrap");
   const isLocked = wrapEl.getAttribute("data-is-locked");
   if (isLocked === "True"){
+
     document.getElementById("i-give-consent").checked = true;
     document.getElementById('i-give-consent').disabled = true;
     document.getElementById('i-give-consent').readOnly = true;
     document.getElementById("signature-details-display").style.display = "block";
+
+    // disable consent to personal data usage
+    const personsalDataUsageEl = document.querySelectorAll(".consent-to-personal-data-usage");
+    personsalDataUsageEl.forEach(element => {
+      element.disabled = true;
+    })
+
+    const otherUsageData = otherUsage.getAttribute("data-other-usage");
+    if (otherUsageData){
+      document.getElementById("other-usage-for-personal-data").checked = true;
+      document.getElementById("other-usage-for-personal-data").disabled = true;
+      document.getElementById("other-usage-for-personal-data-display").style.display = "block";    
+    }else{
+      document.getElementById("other-usage-for-personal-data").checked = false;
+      document.getElementById("other-usage-for-personal-data").disabled = false;
+      document.getElementById("other-usage-for-personal-data-display").style.display = "none";
+    }
+
+
   }
+
+
+
+
 })
 
 
 // Listen for the "change" event on the input field
 signatureImage.addEventListener('change', function() {
+
   const file = signatureImage.files[0];
 
   // Create a FileReader object to read the image file
@@ -35,7 +62,7 @@ signatureImage.addEventListener('change', function() {
     base64String = dataUrl.replace(/^data:image\/(png|jpg);base64,/, '');
 
     // The base64String variable now contains the Base64-encoded image data
-    console.log(base64String);
+    // console.log(base64String);
     signatureImageDisplay.setAttribute("src", `data:image/png;base64,${base64String}`);
     signatureImageContainer.style.display = "block";
 
@@ -58,11 +85,11 @@ document.getElementById("i-give-consent").addEventListener('click', function() {
 });
 
 
-document.getElementById("i-give-consent").addEventListener('click', function() {
+document.getElementById("other-usage-for-personal-data").addEventListener('click', function() {
   if (this.checked){
-      document.getElementById("signature-details").style.display = "block";
+      document.getElementById("other-usage-for-personal-data-input-display").style.display = "block";
   }else{
-      document.getElementById("signature-details").style.display = "none";
+      document.getElementById("other-usage-for-personal-data-input-display").style.display = "none";
   }
 
 
@@ -88,14 +115,18 @@ document.getElementById("form").addEventListener('submit', function(event) {
       
       const name = document.getElementById("name-of-individua-providing-consent").value;
       const address = document.getElementById("address-of-individua-providing-consent").value;
+      const otherUsageOfPersonalData = document.getElementById("other-usage-for-personal-data-input").value;
       let data = {
         action_type: "submit-signature",
         name: name,
         address: address,
         signature: base64String,
         consent_status: "Confirmed",
-        personal_data_usage: getPersonalDataUsage()
+        personal_data_usage: getPersonalDataUsage(),
+        other_usage_of_personal_data: otherUsageOfPersonalData
       };
+
+      console.log(JSON.stringify(data))
 
       fetch(`${baseUrl}/api/privacyconsents/${eventId}/`,{
         method: "PUT",

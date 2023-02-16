@@ -347,6 +347,7 @@ The API will return three error types when requests fail:
                         "status": false
                     }
                 ],
+                "other_usage_of_personal_data": "",
                 "company_website_url": "http://website.com/",
                 "privacy_policy_url": "http://website.com/privacy-policy",
                 "is_locked": false,
@@ -396,6 +397,7 @@ The API will return three error types when requests fail:
             "status": false
         }
     ],
+    "other_usage_of_personal_data": "",
     "is_locked": false,
     "company_website_url": "http://website.com/",
     "privacy_policy_url": "http://website.com/privacy-policy"
@@ -446,6 +448,7 @@ The API will return three error types when requests fail:
                         "status": false
                     }
                 ],
+                "other_usage_of_personal_data": "",
                 "company_website_url": "http://website.com/",
                 "privacy_policy_url": "http://website.com/privacy-policy",
                 "is_locked": false,
@@ -504,6 +507,7 @@ The API will return three error types when requests fail:
                         "status": false
                     }
                 ],
+                "other_usage_of_personal_data": "",
                 "company_website_url": "http://website.com/",
                 "privacy_policy_url": "http://website.com/privacy-policy",
                 "is_locked": false,
@@ -553,6 +557,7 @@ The API will return three error types when requests fail:
             "status": false
         }
     ],
+    "other_usage_of_personal_data": "",
     "is_locked": false,
     "company_website_url": "http://website.com/",
     "privacy_policy_url": "http://website.com/privacy-policy"
@@ -603,6 +608,7 @@ The API will return three error types when requests fail:
                         "status": false
                     }
                 ],
+                "other_usage_of_personal_data": "",
                 "company_website_url": "http://website.com/",
                 "privacy_policy_url": "http://website.com/privacy-policy",
                 "is_locked": false,
@@ -623,42 +629,17 @@ Upload consent personal details and signature
 ### Request body
 ```
 {
-    "platform_type": "Privacy-Consent",
-    "consent_status_detail": {
-        "status": "Pending",
-        "datetime": null
-    },
-    "individual_providing_consent_detail": {
-        "name": "",
-        "address": "",
-        "signature": "",
-        "datetime": null
-    },
-    "company_name": "Consent Company",
-    "company_email": "consent@gmail.com",
-    "privacy_policy_personal_data_collected": [
-        "Name",
-        "Addresss"
+    "action_type":"submit-signature",
+    "name":"Consent Person Name",
+    "address":"Consent Person address",
+    "signature":"iVBORw0KGgoAAAANSUhEUgAADIAAAAlgCAYAAABK ...",
+    "consent_status":"Confirmed",
+    "personal_data_usage":[
+       "Technical support",
+       "Research"
     ],
-    "consent_to_personal_data_usage": [
-        {
-            "description": "Marketing",
-            "status": false
-        },
-        {
-            "description": "Technical support",
-            "status": false
-        },
-        {
-            "description": "Research",
-            "status": false
-        }
-    ],
-    "is_locked": false,
-    "company_website_url": "http://website.com/",
-    "privacy_policy_url": "http://website.com/privacy-policy"
-
-}
+    "other_usage_of_personal_data":"Marketing,Teaching"
+ }
 
 ```
 
@@ -681,7 +662,7 @@ Upload consent personal details and signature
                 "individual_providing_consent_detail": {
                     "name": "worlako test 3",
                     "address": "india",
-                    "signature": "iVBORw0KGgoAAAANSUhEUgAABMwAAAK ...",
+                    "signature": "iVBORw0KGgoAAAANSUhEUgAADIAAAAlgCAYAAABK ...",
                     "datetime": "2023-02-16T06:52:03.178407"
                 },
                 "company_name": "Consent Company",
@@ -704,6 +685,7 @@ Upload consent personal details and signature
                         "status": true
                     }
                 ],
+                "other_usage_of_personal_data": "",
                 "company_website_url": "http://website.com/",
                 "privacy_policy_url": "http://website.com/privacy-policy",
                 "is_locked": true,

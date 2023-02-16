@@ -1,37 +1,13 @@
 {
-    "platform_type": "Privacy-Consent",
-    "consent_status_detail": {
-        "status": "Pending",
-        "datetime": null
-    },
-    "individual_providing_consent_detail": {
-        "name": "",
-        "address": "",
-        "signature": "",
-        "datetime": null
-    },
-    "company_name": "Consent Company",
-    "company_email": "consent@gmail.com",
-    "privacy_policy_personal_data_collected": [
-        "Name",
-        "Addresss"
+    "action_type":"submit-signature",
+    "name":"worlako test",
+    "address":"company",
+    "signature":"iVBORw0KGgoAAAANSUhEUgAADIAAAAlgCAYAAABK ...",
+    "consent_status":"Confirmed",
+    "personal_data_usage":[
+       "Marketing",
+       "Technical support",
+       "Research"
     ],
-    "consent_to_personal_data_usage": [
-        {
-            "description": "Marketing",
-            "status": false
-        },
-        {
-            "description": "Technical support",
-            "status": false
-        },
-        {
-            "description": "Research",
-            "status": false
-        }
-    ],
-    "is_locked": false,
-    "company_website_url": "http://website.com/",
-    "privacy_policy_url": "http://website.com/privacy-policy"
-
-}
+    "other_usage_of_personal_data":"one,two,three,four"
+ }

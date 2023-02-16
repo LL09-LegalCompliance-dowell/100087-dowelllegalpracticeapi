@@ -464,12 +464,6 @@ class PrivacyConsentDetail(APIView):
 
     def submit_signature(self, old_privacy_consent_data, request_data, response_json, status_code):
 
-        print(request_data)
-        print(" ")
-        print(" ")
-        print(" ")
-        print(" ")
-
         old_data = old_privacy_consent_data['data']
         new_privacy_consent = old_data[0][PRIVACY_CONSENT_DOCUMENT_NAME]
 
@@ -484,6 +478,7 @@ class PrivacyConsentDetail(APIView):
                 "datetime": datetime.utcnow().isoformat()
                 }
         new_privacy_consent['is_locked'] = True
+        new_privacy_consent['other_usage_of_personal_data'] = request_data['other_usage_of_personal_data']
 
         # Update consent to personal data usage
         count = 0
@@ -545,7 +540,7 @@ class PrivacyConsentDetail(APIView):
 
 def format_content(data):
 
-    ### BENGIN  Statement Of Work
+    ### BENGIN  Statement Of Work 
     # privacy_policy_personal_data_collected list
     if "privacy_policy_personal_data_collected" in data:
         content = ""
@@ -553,6 +548,22 @@ def format_content(data):
             content += f'{personal_data},'
         
         data['privacy_policy_personal_data_collected'] = content
+
+
+    if "other_usage_of_personal_data" in data:
+
+        content = ""
+        if "," in data['other_usage_of_personal_data']:
+            spliter_data = data['other_usage_of_personal_data'].strip().split(",")
+
+            for personal_data in spliter_data:
+                if personal_data.strip():
+                    content += f'<li>{personal_data}</li>'
+        else:
+            content += f'<li>{data["other_usage_of_personal_data"]}<li/>'
+        data['other_usage_of_personal_data_li'] = content
+
+
 
     # deliverables expected in this scope of work list
     if "consent_to_personal_data_usage" in data:
@@ -570,6 +581,37 @@ def format_content(data):
 
     return data
 
+
+def split_date_and_format_data(data):
+    from datetime import date, datetime
+
+    individual_providing_consent_detail = data['individual_providing_consent_detail']
+    consent_status_detail = data['consent_status_detail']
+
+
+    if "datetime" in consent_status_detail:
+        if consent_status_detail['datetime']:
+            
+            date_c = datetime.fromisoformat(consent_status_detail["datetime"])
+
+            form_datetime = date_c.strftime("%d/%m/%Y %H:%M:%S %p")
+            consent_status_detail["datetime"] = form_datetime
+
+        data['consent_status_detail'] = consent_status_detail
+
+
+    if "datetime" in individual_providing_consent_detail:
+        if individual_providing_consent_detail['datetime']:
+            
+            date_c = datetime.fromisoformat(individual_providing_consent_detail["datetime"])
+
+            form_datetime = date_c.strftime("%d/%m/%Y %H:%M:%S %p")
+            individual_providing_consent_detail["datetime"] = form_datetime
+
+        data['individual_providing_consent_detail'] = individual_providing_consent_detail
+
+
+    return data
 
 
 
@@ -593,6 +635,7 @@ def load_privacy_consent(request, event_id:str):
 
         # replace placeholders in the template with actual values
         privacy_consent = format_content(privacy_consent)
+        privacy_consent = split_date_and_format_data(privacy_consent)
 
         base_url = "http://127.0.0.1:8000" if settings.DEBUG else  BASE_URL
         individual_providing_consent_detail = privacy_consent['individual_providing_consent_detail']

@@ -464,7 +464,25 @@
 	<p class="c1"><span class="c2">Your personal data will be used for the following purposes (check all that apply):</span></p>
 	<ul style="list-style-type: none;" class="c10 lst-kix_r4xrd0yuj6wj-0 start">
 		${consent_to_personal_data_usage}
-		<p><span>&nbsp;<input type="checkbox" id="other-usage-for-personal-data">  Other</span></p>
+		<p>
+			<span>&nbsp;<input type="checkbox" id="other-usage-for-personal-data">  Other</span>
+		</p>
+		<br/>
+
+		<!--BEGIN other usage-->
+		<div style="display: none;" id="other-usage-for-personal-data-input-display" data-other-usage="${other_usage_of_personal_data}">
+			<p style="margin-bottom: 2px;"><small>Enter other usage (e.g Research,Marketing)</small></p>
+			<textarea id="other-usage-for-personal-data-input" rows="4">${other_usage_of_personal_data}</textarea>
+		</div>
+		<!--END other usage-->
+
+		<!--BEGIN other usage display-->
+		<div style="display: none; padding-left: 50px;" id="other-usage-for-personal-data-display" data-other-usage="${other_usage_of_personal_data}">
+			<ol>
+				${other_usage_of_personal_data_li}
+			</ol>
+		</div>
+		<!--END other display-->
 	</ul>
 	<p class="c0"><span class="c2"></span></p>
 	<p class="c1"><span class="c2">The categories of personal data you are being asked to consent to the collection and use are your name, address, email address, telephone number, and [include a description of any other personal data collected]. will keep your personal data with the software where Dowell will collect, store and process your personal data and who are contractually obligated to keep your personal data confidential subject to appropriate safeguards to prevent it from unauthorized disclosure. Also intends to share your personal data with [identify all company units and third parties that will receive personal data]. </span></p>
