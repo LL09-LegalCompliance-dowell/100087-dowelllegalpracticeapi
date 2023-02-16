@@ -1,21 +1,29 @@
 import os
-from django.shortcuts import redirect, render
+from django.urls import reverse
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.clickjacking import xframe_options_exempt
 import jwt
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.request import Request
+from django.conf import settings
+from datetime import datetime
+
 from utils.dowell import (
     fetch_document,
 
     LEGAL_POLICY_COLLECTION,
+    PRIVACY_CONSENT_COLLECTION,
     LEGAL_POLICY_DOCUMENT_NAME,
-    LEGAL_POLICY_KEY
+    PRIVACY_CONSENT_DOCUMENT_NAME,
+    LEGAL_POLICY_KEY,
+    PRIVACY_CONSENT_KEY,
+    BASE_URL
 )
 from dowelllegalpracticeapi.settings import BASE_DIR
 from string import Template
-from legalpolicy.serializers import (LegalPolicySerializer)
+from legalpolicy.serializers import (LegalPolicySerializer, PrivacyConsentSerializer)
 
 
 
@@ -267,6 +275,398 @@ def load_public_legal_policy(request, app_event_id:str, policy:str):
     except Exception as err:
         print(str(err))
         return HttpResponse(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+class PrivacyConsentList(APIView):
+
+    def get(self, request, format=None):
+        try:
+
+            limit = int(request.GET.get("limit", "10"))
+            offset = int(request.GET.get("offset", "0"))
+
+            # Retrieve records
+            response_json = fetch_document(
+                collection=PRIVACY_CONSENT_COLLECTION,
+                document=PRIVACY_CONSENT_DOCUMENT_NAME,
+                fields={}
+            )
+
+            response_json = PrivacyConsentList.add_document_url(request, response_json)
+            return Response(response_json,
+                            status=status.HTTP_200_OK
+                            )
+
+        # The code below will
+        # execute when error occur
+        except Exception as e:
+            print(f"{e}")
+            return Response({
+                "error_msg": f"{e}"
+            },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+
+    def post(self, request: Request, format=None):
+        try:
+            request_data = request.data
+            response_json = {}
+            status_code = 500
+
+
+            if request_data['platform_type'] == "Privacy-Consent":
+                response_json, status_code = self.create_privacy_consent(
+                    request_data,
+                    response_json,
+                    status_code)
+
+
+            response_json = PrivacyConsentList.add_document_url(request, response_json)
+            return Response(response_json, status=status_code)
+
+        # The code below will
+        # execute when error occur
+        except Exception as e:
+            print(f"{e}")
+            response_json = {
+                "isSuccess": False,
+                "message": str(e),
+                "error": status.HTTP_500_INTERNAL_SERVER_ERROR
+            }
+            return Response(response_json, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+    @staticmethod
+    def add_document_url(request, response_data):
+        data_list = response_data['data']
+        new_data_list = []
+
+
+        for data in data_list:
+            privacy_consent = data[PRIVACY_CONSENT_DOCUMENT_NAME]
+
+            privacy_consent['privacy_consent_url'] = request.build_absolute_uri(
+                reverse('load_privacy_consent', kwargs={'event_id': data["eventId"]}))
+
+
+            # add privacy consent to new data list
+            data[PRIVACY_CONSENT_DOCUMENT_NAME] = privacy_consent
+            new_data_list.append(data)
+
+        if new_data_list:
+            response_data['data'] = new_data_list
+
+        return response_data
+
+
+    def create_privacy_consent(self, request_data, response_json, status_code):
+
+        # Create serializer object
+        serializer = PrivacyConsentSerializer(data=request_data)
+
+        # Commit data to database
+        if serializer.is_valid():
+            response_json, status_code = serializer.save()
+        else:
+            print(serializer.errors)
+            response_json = {
+                "isSuccess": False,
+                "message": [{key:value} for key, value in serializer.errors.items()],
+                "error": status.HTTP_500_INTERNAL_SERVER_ERROR
+            }
+
+
+
+            return Response(response_json, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        # return result
+        return response_json, status_code
+
+
+
+class PrivacyConsentDetail(APIView):
+
+    def get(self, request, event_id, format=None):
+        try:
+
+            # Retrieve record
+            response_json = fetch_document(
+                collection=PRIVACY_CONSENT_COLLECTION,
+                document=PRIVACY_CONSENT_DOCUMENT_NAME,
+                fields={"eventId": event_id}
+            )
+
+            response_json = PrivacyConsentList.add_document_url(request, response_json)
+            return Response(response_json, status=status.HTTP_200_OK)
+
+        # The code below will
+        # execute when error occur
+        except Exception as e:
+            print(f"{e}")
+            return Response({
+                "error_msg": f"{e}"
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+    def put(self, request, event_id, format=None):
+        try:
+            from datetime import date
+            request_data = request.data
+            response_json = {}
+            status_code = 500
+
+            # Retrieve old data
+            old_response_data = fetch_document(
+                collection=PRIVACY_CONSENT_COLLECTION,
+                document=PRIVACY_CONSENT_DOCUMENT_NAME,
+                fields={"eventId": event_id}
+            )
+
+            action_type = ""
+            if "action_type" in request_data:
+                action_type = request_data['action_type']
+
+
+            if action_type == "submit-signature":
+                response_json, status_code = self.submit_signature(
+                    old_privacy_consent_data= old_response_data,
+                    request_data= request_data,
+                    response_json= response_json,
+                    status_code= status_code)
+
+
+            else:
+                response_json, status_code = self.update_privacy_consent(
+                    old_privacy_consent_data= old_response_data,
+                    request_data= request_data,
+                    response_json= response_json,
+                    status_code= status_code)
+
+
+
+            response_json = PrivacyConsentList.add_document_url(request, response_json)
+            return Response(response_json, status=status_code)
+
+
+        # The code below will
+        # execute when error occur
+        except Exception as e:
+            print(f"{e}")
+            response_json = {
+                "isSuccess": False,
+                "message": str(e),
+                "error": status.HTTP_500_INTERNAL_SERVER_ERROR
+            }
+            return Response(response_json, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+    def submit_signature(self, old_privacy_consent_data, request_data, response_json, status_code):
+
+        old_data = old_privacy_consent_data['data']
+        new_privacy_consent = old_data[0][PRIVACY_CONSENT_DOCUMENT_NAME]
+
+        new_privacy_consent['consent_status_detail'] = {
+                "status": request_data['consent_status'],
+                "datetime": datetime.utcnow().isoformat()
+                }
+        new_privacy_consent['individual_providing_consent_detail'] = {
+                "name": request_data['name'],
+                "address": request_data['address'],
+                "signature": request_data['signature'],
+                "datetime": datetime.utcnow().isoformat()
+                }
+        new_privacy_consent['is_locked'] = True
+        new_privacy_consent['other_usage_of_personal_data'] = request_data['other_usage_of_personal_data']
+
+        # Update consent to personal data usage
+        count = 0
+        for usage in new_privacy_consent['consent_to_personal_data_usage']:
+
+            if usage['description'] in request_data['personal_data_usage']:
+                # Update status
+                new_privacy_consent['consent_to_personal_data_usage'][count]['status'] = True
+            else:
+                new_privacy_consent['consent_to_personal_data_usage'][count]['status'] = False
+
+            count += 1
+        
+
+
+        # Update and Commit data into database
+        serializer = PrivacyConsentSerializer(
+            old_privacy_consent_data, data=new_privacy_consent)
+
+        if serializer.is_valid():
+            response_json, status_code = serializer.update(
+                old_privacy_consent_data, serializer.validated_data)
+
+        else:
+            status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+            response_json = {
+                "isSuccess": False,
+                "message": [str(error) for error in serializer.errors],
+                "error": status_code
+            }
+
+
+        # return result
+        return response_json, status_code
+
+
+    def update_privacy_consent(self, old_privacy_consent_data, request_data, response_json, status_code):
+
+        # Update and Commit data into database
+        serializer = PrivacyConsentSerializer(
+            old_privacy_consent_data, data=request_data)
+
+        if serializer.is_valid():
+            response_json, status_code = serializer.update(
+                old_privacy_consent_data, serializer.validated_data)
+
+        else:
+            status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+            response_json = {
+                "isSuccess": False,
+                "message": [str(error) for error in serializer.errors],
+                "error": status_code
+            }
+
+
+        # return result
+        return response_json, status_code
+
+
+def format_content(data):
+
+    ### BENGIN  Statement Of Work 
+    # privacy_policy_personal_data_collected list
+    if "privacy_policy_personal_data_collected" in data:
+        content = ""
+        for personal_data in data['privacy_policy_personal_data_collected']:
+            content += f'{personal_data},'
+        
+        data['privacy_policy_personal_data_collected'] = content
+
+
+    if "other_usage_of_personal_data" in data:
+
+        content = ""
+        if "," in data['other_usage_of_personal_data']:
+            spliter_data = data['other_usage_of_personal_data'].strip().split(",")
+
+            for personal_data in spliter_data:
+                if personal_data.strip():
+                    content += f'<li>{personal_data}</li>'
+        else:
+            content += f'<li>{data["other_usage_of_personal_data"]}<li/>'
+        data['other_usage_of_personal_data_li'] = content
+
+
+
+    # deliverables expected in this scope of work list
+    if "consent_to_personal_data_usage" in data:
+        content = ""
+        for usage in data['consent_to_personal_data_usage']:
+            if usage['status']:
+                content += f'<p><span>&nbsp;<input type="checkbox" checked class="consent-to-personal-data-usage" data-description="{usage["description"]}"> {usage["description"]}</span></p>'
+            else:
+                content += f'<p><span>&nbsp;<input type="checkbox" class="consent-to-personal-data-usage" data-description="{usage["description"]}"> {usage["description"]}</span></p>'
+        
+        data['consent_to_personal_data_usage'] = content
+
+    ### END Statement Of Work
+
+
+    return data
+
+
+def split_date_and_format_data(data):
+    from datetime import date, datetime
+
+    individual_providing_consent_detail = data['individual_providing_consent_detail']
+    consent_status_detail = data['consent_status_detail']
+
+
+    if "datetime" in consent_status_detail:
+        if consent_status_detail['datetime']:
+            
+            date_c = datetime.fromisoformat(consent_status_detail["datetime"])
+
+            form_datetime = date_c.strftime("%d/%m/%Y %H:%M:%S %p")
+            consent_status_detail["datetime"] = form_datetime
+
+        data['consent_status_detail'] = consent_status_detail
+
+
+    if "datetime" in individual_providing_consent_detail:
+        if individual_providing_consent_detail['datetime']:
+            
+            date_c = datetime.fromisoformat(individual_providing_consent_detail["datetime"])
+
+            form_datetime = date_c.strftime("%d/%m/%Y %H:%M:%S %p")
+            individual_providing_consent_detail["datetime"] = form_datetime
+
+        data['individual_providing_consent_detail'] = individual_providing_consent_detail
+
+
+    return data
+
+
+
+@xframe_options_exempt
+def load_privacy_consent(request, event_id:str):
+    try:
+
+        # retrieve compliance related data from
+        # database
+        response_data = fetch_document(
+            PRIVACY_CONSENT_COLLECTION,
+            PRIVACY_CONSENT_DOCUMENT_NAME,
+            fields={"eventId": event_id}
+            )
+        
+        data = response_data['data'][0]
+        privacy_consent = data[PRIVACY_CONSENT_DOCUMENT_NAME]
+
+        # load template from the filesystem
+        content = read_template("privacy -consent-form.html")
+
+        # replace placeholders in the template with actual values
+        privacy_consent = format_content(privacy_consent)
+        privacy_consent = split_date_and_format_data(privacy_consent)
+
+        base_url = "http://127.0.0.1:8000" if settings.DEBUG else  BASE_URL
+        individual_providing_consent_detail = privacy_consent['individual_providing_consent_detail']
+        consent_status_detail = privacy_consent['consent_status_detail']
+
+
+        if "is_locked" not in privacy_consent:
+            privacy_consent['is_locked'] = False
+        if "company_website_url" not in privacy_consent:
+            privacy_consent['company_website_url'] = ""
+
+
+        content = content.substitute(
+            event_id= event_id,
+            **privacy_consent,
+            base_url=base_url,
+            **individual_providing_consent_detail,
+            consent_confirm= consent_status_detail['status'],
+            consent_datetime= consent_status_detail['datetime']
+            )
+
+
+        return HttpResponse(content= content)
+
+
+
+    except Exception as err:
+        print(str(err))
+        return HttpResponse(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 
 
 

@@ -10,15 +10,19 @@ sys.path.append(os.path.dirname(SCRIPT_DIR))
 # DO NOT CHANGE THE CONSTANTS
 # COLLECTIONS
 LEGAL_POLICY_COLLECTION = "policies"
+PRIVACY_CONSENT_COLLECTION = "privacy_consent_policies"
 
 # DOCUMENTS
 LEGAL_POLICY_DOCUMENT_NAME = "policies_api"
+PRIVACY_CONSENT_DOCUMENT_NAME = "privacy_consent_policies"
 
 # DOCUMENT KEY
 LEGAL_POLICY_KEY = "policies_api"
+PRIVACY_CONSENT_KEY = "privacy_consent_policies"
 
 # TEAM ID
 LEGAL_POLICY_TEAM_ID = "10008701"
+PRIVACY_CONSENT_TEAM_ID = "1000800003"
 
 # FUNCTION ID
 DEFAULT_FUNC_ID = "ABCDE"
@@ -32,6 +36,7 @@ CLUSTER = "license"
 RECORD_PER_PAGE = 10
 BASE_IMAGE_URL = "https://100087.pythonanywhere.com/media/img/"
 BASE_DOC_URL = "https://100087.pythonanywhere.com/media/doc/"
+BASE_URL =  "https://100087.pythonanywhere.com"
 
 
 def format_id(id):
@@ -242,11 +247,14 @@ def get_team_id(collection):
     if collection == LEGAL_POLICY_COLLECTION:
         team_id = LEGAL_POLICY_TEAM_ID
 
+    if collection == PRIVACY_CONSENT_COLLECTION:
+        team_id = PRIVACY_CONSENT_TEAM_ID
+
     return team_id
 
 
 def get_function_id(collection):
-    func_id = ""
+    func_id = "ABCDE"
 
     if collection == LEGAL_POLICY_COLLECTION:
         func_id = DEFAULT_FUNC_ID

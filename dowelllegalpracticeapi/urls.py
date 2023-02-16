@@ -20,6 +20,9 @@ from legalpolicy import views as vlp
 from legalpolicy2 import views as vlp2
 from django.conf.urls.static import static
 from django.conf import settings
+from legalpolicy.views import load_privacy_consent
+
+
 
 
 urlpatterns = [
@@ -30,6 +33,7 @@ urlpatterns = [
     path("policy/<str:app_event_id>/<str:policy>/", vlp.load_public_legal_policy, name="load_public_legal_policy"),
     path("legalpolicies/<str:app_event_id>/<str:policy>/policies/", vlp2.load_public_legal_policy, name="tkr_load_public_legal_policy"),
     path("legalpolicies/testguides/", include("legalpolicyapi_testguide.urls")),
+    path('privacyconsents/<str:event_id>/', load_privacy_consent, name= "load_privacy_consent"),
     path('', vlp.index, name="index")
 ]\
     + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)\

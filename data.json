@@ -1,0 +1,13 @@
+{
+    "action_type":"submit-signature",
+    "name":"worlako test",
+    "address":"company",
+    "signature":"iVBORw0KGgoAAAANSUhEUgAADIAAAAlgCAYAAABK ...",
+    "consent_status":"Confirmed",
+    "personal_data_usage":[
+       "Marketing",
+       "Technical support",
+       "Research"
+    ],
+    "other_usage_of_personal_data":"one,two,three,four"
+ }
