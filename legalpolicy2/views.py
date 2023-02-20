@@ -2,6 +2,7 @@ import os
 from rest_framework.response import Response
 from utils.dowell import (
     fetch_document,
+    get_user_profile,
 
     LEGAL_POLICY_COLLECTION,
     PRIVACY_CONSENT_COLLECTION,
@@ -19,6 +20,7 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
 from django.views.decorators.clickjacking import xframe_options_exempt
+from django.db.models import Q
 
 MONTHS = [
     "January",
@@ -45,7 +47,18 @@ class IAgreeToPolicyStatus(APIView):
             status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
             legal_policies = []
 
-            query_data = IAgreeToPolicyTracker.objects.filter(session_id = session_id)
+            # Get user profile data
+            res = get_user_profile(session_id)
+
+            query_data = []
+            if res:
+                if "id" in res:
+                    query_data = IAgreeToPolicyTracker.objects.filter(user_id = res['id'])
+            else:
+                query_data = IAgreeToPolicyTracker.objects.filter(session_id = session_id)
+
+
+
             for data in query_data:
 
                 legal_policies.append(data.format())
@@ -78,7 +91,10 @@ class IAgreeToPolicyTrackerDetail(APIView):
             response_data = {}
             status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 
-            query_data = IAgreeToPolicyTracker.objects.filter(policy_request_id = session_id).first()
+            # Get user profile data
+            res = get_user_profile(session_id)
+
+            query_data = IAgreeToPolicyTracker.objects.filter(user_id = session_id).first()
             if query_data:
                 response_data= {
                     "data": [query_data.format()],
@@ -103,9 +119,8 @@ class IAgreeToPolicyTrackerDetail(APIView):
         status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         try:
             response_data = {}
-
             query_data = IAgreeToPolicyTracker.objects.filter(policy_request_id = policy_request_id).first()
-            print(query_data)
+
             if query_data:
 
                 #update the tracker
@@ -146,10 +161,20 @@ def load_public_legal_policy(request, app_event_id:str, policy:str):
         agreed_already_message = ""
         i_agree_status = 0
 
+        # Get user profile data
+        username = ""
+        user_id = ""
+        res = get_user_profile(session_id)
+        if res:
+            if "id" in res:
+                user_id = res["id"]
+                username = res["username"].strip()
+
         try:
 
             # log request id 
-            query_data = IAgreeToPolicyTracker.objects.filter(policy_request_id = policy_request_id).first()
+            query_data = IAgreeToPolicyTracker.objects.filter(Q(policy_request_id = policy_request_id) | Q(user_id=user_id), legal_policy_type=policy).first()
+
             if not query_data:
                 new_track = IAgreeToPolicyTracker()
                 new_track.policy_request_id = policy_request_id
@@ -157,6 +182,8 @@ def load_public_legal_policy(request, app_event_id:str, policy:str):
                 new_track.session_id = session_id
                 new_track.i_agree = False
                 new_track.log_datetime = datetime.now()
+                new_track.user_id =  user_id
+                new_track.username = username
                 new_track.save()
 
             if query_data:

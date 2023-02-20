@@ -37,6 +37,8 @@ class LegalPolicySerializer(serializers.Serializer):
     app_or_website_governed_by_or_jurisdiction = serializers.CharField(max_length=100, allow_blank=True, required=False, default= " ")
     days_allowed_for_cancellation_of_order_or_product = serializers.IntegerField(required=False, default= 0)
     reimburse_days = serializers.IntegerField(required=False, default= 0)
+    type_of_personal_data_collected_from_users = serializers.ListField(default=[])
+    personal_data_collected_from_users_will_be_used_for = serializers.ListField(default=[])
 
 
     def create(self, validated_data):
@@ -107,11 +109,16 @@ class PrivacyConsentSerializer(serializers.Serializer):
     company_name = serializers.CharField(max_length=100, allow_blank=False, required=True)
     company_email = serializers.EmailField(required=True)
     privacy_policy_personal_data_collected = serializers.ListField(default=[])
-    consent_to_personal_data_usage = serializers.ListField(default={}) # will be checkout by the receipient
+    consent_to_personal_data_usage = serializers.ListField(default=[]) # will be checkout by the receipient
     company_website_url = serializers.URLField(required=True)
     privacy_policy_url = serializers.URLField(required=True)
     is_locked = serializers.BooleanField(default=False)
     other_usage_of_personal_data = serializers.CharField(max_length=500, allow_blank=True, required=True)
+    user_id = serializers.CharField(max_length=50, allow_blank=True, required=False, default=" ")
+    username = serializers.CharField(max_length=255, allow_blank=True, required=False, default="")
+    session_id = serializers.CharField(max_length=500, allow_blank=True, required=False, default="")
+    app_or_website_consent_to_event_id = serializers.CharField(max_length=500, allow_blank=True, required=False, default="")
+
 
 
     def create(self, validated_data):

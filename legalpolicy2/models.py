@@ -8,6 +8,8 @@ class IAgreeToPolicyTracker(models.Model):
     log_datetime = models.DateTimeField()
     i_agreed_datetime = models.DateTimeField(null=True)
     legal_policy_type = models.CharField(max_length=255, default=" ")
+    user_id = models.CharField(max_length=50, default=" ")
+    username = models.CharField(max_length=255, default=" ")
 
 
 

@@ -37,6 +37,7 @@ RECORD_PER_PAGE = 10
 BASE_IMAGE_URL = "https://100087.pythonanywhere.com/media/img/"
 BASE_DOC_URL = "https://100087.pythonanywhere.com/media/doc/"
 BASE_URL =  "https://100087.pythonanywhere.com"
+USER_PROFILE_URL = "https://100014.pythonanywhere.com/api/profile/"
 
 
 def format_id(id):
@@ -260,6 +261,15 @@ def get_function_id(collection):
         func_id = DEFAULT_FUNC_ID
 
     return func_id
+
+
+
+def get_user_profile(key):
+    res = requests.post(USER_PROFILE_URL, json={"key":key})
+    if res.status_code >= 200 and res.status_code <= 299:
+        return res.json()
+
+    return False
 
 
 if __name__ == "__main__":

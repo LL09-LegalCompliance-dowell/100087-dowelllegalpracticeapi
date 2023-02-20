@@ -57,8 +57,19 @@ The API will return three error types when requests fail:
                 "website_contact_page_url": "http://appsample.com",
                 "last_update_date": "2022-10-09",
                 "app_or_website_governed_by_or_jurisdiction": " ",
-                "days_allowed_for_cancellation_of_order_or_product": 90,
-                "reimburse_days": 30
+                "days_allowed_for_cancellation_of_order_or_product": 0,
+                "reimburse_days": 0,
+                "type_of_personal_data_collected_from_users": [
+                    "Name",
+                    "Phone",
+                    "IP Address"
+                ],
+                "personal_data_collected_from_users_will_be_used_for": [
+                    "Marketing",
+                    "Advertisement",
+                    "Research",
+                    "Technical Support"
+                ]
             }
         },
         {
@@ -90,8 +101,21 @@ The API will return three error types when requests fail:
 
 - General:
   - Creates a new app, website and services details using the submitted json data, Returns the detail, success value, and event id.
-- `curl http://127.0.0.1:8000/api/legalpolicies -X POST -H "Content-Type: application/json" -d '{"platform_type": "App","app_or_website_or_service_name": "LegalZard","app_or_website_or_service_url": "https://play.google.com/store/apps/details?id=com.dowelllicenses.policies","description": "App description",
-"company_name": "Dowell","company_address": "Singapore 7845 STREET","company_registration_number": "SAMPLE78545REG","company_country": "Singapore","contact_email_id": "app@app.com","website_contact_page_url": "http://appsample.com","last_update_date": "2022-10-09", "app_or_website_governed_by_or_jurisdiction": " ","days_allowed_for_cancellation_of_order_or_product": 90,"reimburse_days": 30}'`
+- `curl http://127.0.0.1:8000/api/legalpolicies -X POST -H "Content-Type: application/json" -d '{
+    "platform_type": "App",
+    "app_or_website_or_service_name": "LegalZard",
+    "app_or_website_or_service_url": "https://play.google.com/store/apps/details?id=com.dowelllicenses.policies",
+    "description": "App description",
+    "company_name": "Dowell",
+    "company_address": "Singapore 7845 STREET",
+    "company_registration_number": "SAMPLE78545REG",
+    "company_country": "Singapore",
+    "contact_email_id": "app@app.com",
+    "website_contact_page_url": "http://appsample.com",
+    "last_update_date": "2022-10-09",
+    "type_of_personal_data_collected_from_users": ["Name", "Phone", "IP Address"],
+    "personal_data_collected_from_users_will_be_used_for": ["Marketing", "Advertisement", "Research", "Technical Support"]
+}'`
 
 - You can also open the link `http://127.0.0.1:8000/api/licenses/` in a browser and perform the post operation
 
@@ -100,8 +124,8 @@ The API will return three error types when requests fail:
     "isSuccess": true,
     "data": [
         {
-            "_id": "63428eb8317ec81d6c6c7ffd",
-            "eventId": "FB1010000000001665306290565391",
+            "_id": "63ef26440cad1eaadb000f24",
+            "eventId": "FB1010000000167661727258393123",
             "policies_api": {
                 "platform_type": "App",
                 "app_or_website_or_service_name": "LegalZard",
@@ -115,14 +139,23 @@ The API will return three error types when requests fail:
                 "website_contact_page_url": "http://appsample.com",
                 "last_update_date": "2022-10-09",
                 "app_or_website_governed_by_or_jurisdiction": " ",
-                "days_allowed_for_cancellation_of_order_or_product": 90,
-                "reimburse_days": 30
+                "days_allowed_for_cancellation_of_order_or_product": 0,
+                "reimburse_days": 0,
+                "type_of_personal_data_collected_from_users": [
+                    "Name",
+                    "Phone",
+                    "IP Address"
+                ],
+                "personal_data_collected_from_users_will_be_used_for": [
+                    "Marketing",
+                    "Advertisement",
+                    "Research",
+                    "Technical Support"
+                ]
             }
         }
-        
     ]
 }
-
 ```
 
 
@@ -137,8 +170,8 @@ The API will return three error types when requests fail:
     "isSuccess": true,
     "data": [
         {
-            "_id": "63428eb8317ec81d6c6c7ffd",
-            "eventId": "FB1010000000001665306290565391",
+            "_id": "63ef26440cad1eaadb000f24",
+            "eventId": "FB1010000000167661727258393123",
             "policies_api": {
                 "platform_type": "App",
                 "app_or_website_or_service_name": "LegalZard",
@@ -152,22 +185,44 @@ The API will return three error types when requests fail:
                 "website_contact_page_url": "http://appsample.com",
                 "last_update_date": "2022-10-09",
                 "app_or_website_governed_by_or_jurisdiction": " ",
-                "days_allowed_for_cancellation_of_order_or_product": 90,
-                "reimburse_days": 30
+                "days_allowed_for_cancellation_of_order_or_product": 0,
+                "reimburse_days": 0,
+                "type_of_personal_data_collected_from_users": [
+                    "Name",
+                    "Phone",
+                    "IP Address"
+                ],
+                "personal_data_collected_from_users_will_be_used_for": [
+                    "Marketing",
+                    "Advertisement",
+                    "Research",
+                    "Technical Support"
+                ]
             }
         }
-        
     ]
 }
-
 ```
 
 #### PUT /api/legalpolicies/{event_id}/
 
 - General:
   - update legal policy object detail for app, website and services using the submitted json data, Returns the detail, success value, and event id.
-- `curl http://127.0.0.1:8000/api/legalpolicies -X POST -H "Content-Type: application/json" -d '{"platform_type": "App","app_or_website_or_service_name": "LegalZard Part","app_or_website_or_service_url": "https://play.google.com/store/apps/details?id=com.dowelllicenses.policies","description": "App description",
-"company_name": "Dowell","company_address": "Singapore 7845 STREET","company_registration_number": "SAMPLE78545REG","company_country": "Singapore","contact_email_id": "app@app.com","website_contact_page_url": "http://appsample.com","last_update_date": "2022-10-09", "app_or_website_governed_by_or_jurisdiction": " ",                "days_allowed_for_cancellation_of_order_or_product": 90,"reimburse_days": 30}'`
+- `curl http://127.0.0.1:8000/api/legalpolicies -X POST -H "Content-Type: application/json" -d '{
+    "platform_type": "App",
+    "app_or_website_or_service_name": "LegalZard",
+    "app_or_website_or_service_url": "https://play.google.com/store/apps/details?id=com.dowelllicenses.policies",
+    "description": "App description",
+    "company_name": "Dowell",
+    "company_address": "Singapore 7845 STREET",
+    "company_registration_number": "SAMPLE78545REG",
+    "company_country": "Singapore",
+    "contact_email_id": "app@app.com",
+    "website_contact_page_url": "http://appsample.com",
+    "last_update_date": "2022-10-09",
+    "type_of_personal_data_collected_from_users": ["Name", "Phone", "IP Address"],
+    "personal_data_collected_from_users_will_be_used_for": ["Marketing", "Advertisement", "Research", "Technical Support"]
+}'`
 
 - You can also open the link `http://127.0.0.1:8000/api/legalpolicies/FB1010000000001665306290565391/` in a browser and perform the post operation
 
@@ -176,11 +231,11 @@ The API will return three error types when requests fail:
     "isSuccess": true,
     "data": [
         {
-            "_id": "63428eb8317ec81d6c6c7ffd",
-            "eventId": "FB1010000000001665306290565391",
+            "_id": "63ef26440cad1eaadb000f24",
+            "eventId": "FB1010000000167661727258393123",
             "policies_api": {
                 "platform_type": "App",
-                "app_or_website_or_service_name": "LegalZard Part",
+                "app_or_website_or_service_name": "LegalZard",
                 "app_or_website_or_service_url": "https://play.google.com/store/apps/details?id=com.dowelllicenses.policies",
                 "description": "App description",
                 "company_name": "Dowell",
@@ -191,14 +246,23 @@ The API will return three error types when requests fail:
                 "website_contact_page_url": "http://appsample.com",
                 "last_update_date": "2022-10-09",
                 "app_or_website_governed_by_or_jurisdiction": " ",
-                "days_allowed_for_cancellation_of_order_or_product": 90,
-                "reimburse_days": 30
+                "days_allowed_for_cancellation_of_order_or_product": 0,
+                "reimburse_days": 0,
+                "type_of_personal_data_collected_from_users": [
+                    "Name",
+                    "Phone",
+                    "IP Address"
+                ],
+                "personal_data_collected_from_users_will_be_used_for": [
+                    "Marketing",
+                    "Advertisement",
+                    "Research",
+                    "Technical Support"
+                ]
             }
         }
-        
     ]
 }
-
 ```
 
 
@@ -213,11 +277,11 @@ The API will return three error types when requests fail:
     "isSuccess": true,
     "data": [
         {
-            "_id": "63428eb8317ec81d6c6c7ffd",
-            "eventId": "FB1010000000001665306290565391",
+            "_id": "63ef26440cad1eaadb000f24",
+            "eventId": "FB1010000000167661727258393123",
             "policies_api": {
                 "platform_type": "App",
-                "app_or_website_or_service_name": "LegalZard Part",
+                "app_or_website_or_service_name": "LegalZard",
                 "app_or_website_or_service_url": "https://play.google.com/store/apps/details?id=com.dowelllicenses.policies",
                 "description": "App description",
                 "company_name": "Dowell",
@@ -228,14 +292,23 @@ The API will return three error types when requests fail:
                 "website_contact_page_url": "http://appsample.com",
                 "last_update_date": "2022-10-09",
                 "app_or_website_governed_by_or_jurisdiction": " ",
-                "days_allowed_for_cancellation_of_order_or_product": 90,
-                "reimburse_days": 30
+                "days_allowed_for_cancellation_of_order_or_product": 0,
+                "reimburse_days": 0,
+                "type_of_personal_data_collected_from_users": [
+                    "Name",
+                    "Phone",
+                    "IP Address"
+                ],
+                "personal_data_collected_from_users_will_be_used_for": [
+                    "Marketing",
+                    "Advertisement",
+                    "Research",
+                    "Technical Support"
+                ]
             }
         }
-        
     ]
 }
-
 ```
 
 
@@ -725,3 +798,6 @@ Upload consent personal details and signature
 - [safety-disclaimer](https://100087.pythonanywhere.com/policy/FB1010000000001665306290565391/safety-disclaimer/)
 - [security-policy-for-wifi-qr-code](https://100087.pythonanywhere.com/policy/FB1010000000001665306290565391/security-policy-for-wifi-qr-code/)
 - [website-security-policy](https://100087.pythonanywhere.com/policy/FB1010000000001665306290565391/website-security-policy/)
+security-policy-for-wifi-qr-code/)
+
+- [privacy-policy-consent](https://100087.pythonanywhere.com/privacyconsents/FB1010000000167661727258393123/privacy-policy-consent/)
