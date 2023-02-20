@@ -114,6 +114,11 @@ class PrivacyConsentSerializer(serializers.Serializer):
     privacy_policy_url = serializers.URLField(required=True)
     is_locked = serializers.BooleanField(default=False)
     other_usage_of_personal_data = serializers.CharField(max_length=500, allow_blank=True, required=True)
+    user_id = serializers.CharField(max_length=50, allow_blank=True, required=False, default=" ")
+    username = serializers.CharField(max_length=255, allow_blank=True, required=False, default="")
+    session_id = serializers.CharField(max_length=500, allow_blank=True, required=False, default="")
+    app_or_website_consent_to_event_id = serializers.CharField(max_length=500, allow_blank=True, required=False, default="")
+
 
 
     def create(self, validated_data):

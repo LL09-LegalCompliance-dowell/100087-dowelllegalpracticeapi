@@ -237,7 +237,6 @@ def load_public_legal_policy(request, app_event_id:str, policy:str):
 
         jwt_token = encode(jwt_raw_data)
         redirect_url = f"{redirect_url}?token={jwt_token}"
-        # print("redirect_url: ",redirect_url)
 
 
         # retrieve policy related data from
@@ -295,7 +294,6 @@ class PrivacyConsentList(APIView):
                 fields={}
             )
 
-            response_json = PrivacyConsentList.add_document_url(request, response_json)
             return Response(response_json,
                             status=status.HTTP_200_OK
                             )
@@ -324,8 +322,6 @@ class PrivacyConsentList(APIView):
                     response_json,
                     status_code)
 
-
-            response_json = PrivacyConsentList.add_document_url(request, response_json)
             return Response(response_json, status=status_code)
 
         # The code below will
@@ -349,8 +345,11 @@ class PrivacyConsentList(APIView):
         for data in data_list:
             privacy_consent = data[PRIVACY_CONSENT_DOCUMENT_NAME]
 
-            privacy_consent['privacy_consent_url'] = request.build_absolute_uri(
-                reverse('load_privacy_consent', kwargs={'event_id': data["eventId"]}))
+            if "app_or_website_consent_to_event_id" in privacy_consent:
+                privacy_consent['privacy_consent_url'] = request.build_absolute_uri(
+                    reverse('load_privacy_consent', kwargs={'app_event_id': privacy_consent["app_or_website_consent_to_event_id"]}))
+            else:
+                privacy_consent['privacy_consent_url'] = ""
 
 
             # add privacy consent to new data list
@@ -400,7 +399,6 @@ class PrivacyConsentDetail(APIView):
                 fields={"eventId": event_id}
             )
 
-            response_json = PrivacyConsentList.add_document_url(request, response_json)
             return Response(response_json, status=status.HTTP_200_OK)
 
         # The code below will
@@ -447,8 +445,6 @@ class PrivacyConsentDetail(APIView):
                     status_code= status_code)
 
 
-
-            response_json = PrivacyConsentList.add_document_url(request, response_json)
             return Response(response_json, status=status_code)
 
 
@@ -618,22 +614,65 @@ def split_date_and_format_data(data):
 
 
 @xframe_options_exempt
-def load_privacy_consent(request, event_id:str):
+def load_privacy_consent(request, app_event_id:str):
     try:
 
+
+        redirect_url = request.GET.get("redirect_url", "none")
+        session_id = request.GET.get("session_id", "")
+
+        # Get user profile data
+        username = ""
+        user_id = ""
+        res = get_user_profile(session_id)
+
+        if res:
+            if "id" in res:
+                user_id = res["id"]
+                username = res["username"].strip()
+
+
+
         # retrieve compliance related data from
-        # database
+        # database 
         response_data = fetch_document(
             PRIVACY_CONSENT_COLLECTION,
             PRIVACY_CONSENT_DOCUMENT_NAME,
-            fields={"eventId": event_id}
+            fields={
+                    "privacy_consent_policies.app_or_website_consent_to_event_id": app_event_id,
+                    "$or": [ { "privacy_consent_policies.session_id": session_id }, { "privacy_consent_policies.user_id": user_id } ]
+                 }
             )
+
+        print("response_data['data']", len(response_data['data']))
+        if not response_data['data']:
+
+            # retrieve policy related data from
+            # database
+            app_response_data = fetch_document(
+                LEGAL_POLICY_COLLECTION,
+                LEGAL_POLICY_DOCUMENT_NAME,
+                fields={"eventId": app_event_id}
+                )
+            
+            app_data = app_response_data['data'][0]
+
+
+            data_object = build_privacy_consent_object(app_data, username, session_id, user_id, app_event_id)
+            response_data = create_privacy_consent(data_object)
+
+            
+
+        
+
+
+
         
         data = response_data['data'][0]
         privacy_consent = data[PRIVACY_CONSENT_DOCUMENT_NAME]
 
         # load template from the filesystem
-        content = read_template("privacy -consent-form.html")
+        content = read_template("privacy-consent-form.html")
 
         # replace placeholders in the template with actual values
         privacy_consent = format_content(privacy_consent)
@@ -651,7 +690,7 @@ def load_privacy_consent(request, event_id:str):
 
 
         content = content.substitute(
-            event_id= event_id,
+            event_id= data["eventId"],
             **privacy_consent,
             base_url=base_url,
             **individual_providing_consent_detail,
@@ -667,6 +706,74 @@ def load_privacy_consent(request, event_id:str):
     except Exception as err:
         print(str(err))
         return HttpResponse(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+def build_privacy_consent_object(app_data, username, session_id, user_id, app_event_id):
+    policy = app_data["policies_api"]
+
+    consent_to_personal_data_usage = []
+    privacy_policy_personal_data_collected = []
+    base_url = "http://127.0.0.1:8000" if settings.DEBUG else  BASE_URL
+    
+    if "personal_data_collected_from_users_will_be_used_for" in policy:
+        for data in policy["personal_data_collected_from_users_will_be_used_for"]:
+            consent_to_personal_data_usage.append({
+                    "description": data,
+                    "status": False
+                })
+
+    if "type_of_personal_data_collected_from_users" in policy:
+        privacy_policy_personal_data_collected = policy["type_of_personal_data_collected_from_users"]
+
+    return {
+                    "platform_type": "Privacy-Consent",
+                    "consent_status_detail": {
+                        "status": "Pending",
+                        "datetime": None
+                    },
+                    "individual_providing_consent_detail": {
+                        "name": "",
+                        "address": "",
+                        "signature": "",
+                        "datetime": None
+                    },
+                    "company_name": policy["company_name"],
+                    "company_email":  policy["contact_email_id"],
+                    "privacy_policy_personal_data_collected": privacy_policy_personal_data_collected,
+                    "consent_to_personal_data_usage": consent_to_personal_data_usage,
+                    "other_usage_of_personal_data": "",
+                    "is_locked": False,
+                    "company_website_url":  policy["website_contact_page_url"],
+                    "privacy_policy_url":  f"{base_url}/legalpolicies/{app_event_id}/app-privacy-policy/policies/?session_id={session_id}",
+                    "username": username,
+                    "user_id": user_id,
+                    "session_id": session_id,
+                    "app_or_website_consent_to_event_id": app_event_id
+                    
+            }
+
+
+
+
+def create_privacy_consent(data):
+
+    # Create serializer object
+    serializer = PrivacyConsentSerializer(data=data)
+
+    # Commit data to database
+    if serializer.is_valid():
+        response_json, status_code = serializer.save()
+
+        return response_json
+    else:
+        print(serializer.errors)
+        response_json = {
+            "isSuccess": False,
+            "message": [{key:value} for key, value in serializer.errors.items()],
+            "error": status.HTTP_500_INTERNAL_SERVER_ERROR
+        }
+
+        return response_json
 
 
 
