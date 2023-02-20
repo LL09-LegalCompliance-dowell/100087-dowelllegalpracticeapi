@@ -108,6 +108,16 @@
             <label for="website-security-policy"> <a id="website-security-policy-link" href="#">website-security-policy</a></label><br>
         </div>
 
+        <div class="content">
+            <input type="checkbox" id="privacy-consent" value="0">
+            <label for="privacy-consent"> <a id="privacy-consent-link" href="#">Privacy Consent</a></label><br>
+
+            <pre id="privacy-consent-pre" style="background-color: lightgray;">
+            
+            
+            </pre>
+        </div>
+
 
         <div style="margin-top: 50px;" class="content">
             <h4>How to update policy checkbox code snippet</h4>
@@ -157,6 +167,10 @@
 
             </pre>
         </div>
+
+
+
+
         
 
 
@@ -176,6 +190,8 @@
 
     const baseUrl = "https://100087.pythonanywhere.com/legalpolicies/"
     const baseApiUrl = "https://100087.pythonanywhere.com/api/legalpolicies/"
+
+    const basePCUrl = "https://100087.pythonanywhere.com/privacyconsents/"
 
 
     const displayRequestParam = (preId, linkId, policyType) =>{
@@ -212,6 +228,38 @@
         linkEl.setAttribute("href", `${baseUrl}${appEventId}/${policyType}/policies/?redirect_url=${redirectUrl}&session_id=${sessionId}`)
     }
 
+
+    const displayRequestParamPrivacyConsent = () =>{
+
+        const sessionId = document.getElementById("session_id").value;
+        const appEventId = document.getElementById("app_event_id").value;
+        const redirectUrl = document.getElementById("redirect_url").value;
+        const preEl = document.getElementById("privacy-consent-pre");
+        const linkEl = document.getElementById("privacy-consent-link");
+
+
+        localStorage.setItem("redirectUrl", redirectUrl);
+        localStorage.setItem("sessionId", sessionId);
+        localStorage.setItem("appEventId", appEventId);
+
+
+        const content = `
+        Query paramater:
+        - session_id=${sessionId}
+
+        Other paramater
+        - app_event_id=${appEventId} 
+
+
+        GET/ Iframe Request url:
+        ${basePCUrl}${appEventId}/?session_id=${sessionId}
+
+        `
+
+        preEl.innerHTML = content;
+        linkEl.setAttribute("href", `${basePCUrl}${appEventId}/?session_id=${sessionId}`)
+    }
+
     const callDisplayRequestParam = () => {
         
         displayRequestParam("app-privacy-policy-pre", "mobile-app-privacy-policy-summary-link", "mobile-app-privacy-policy-summary");
@@ -225,6 +273,8 @@
         displayRequestParam("app-privacy-policy-pre", "security-policy-for-wifi-qr-code-link", "security-policy-for-wifi-qr-code");
         displayRequestParam("app-privacy-policy-pre", "website-security-policy-link", "website-security-policy");
         displayRequestParam("app-privacy-policy-pre", "app-privacy-policy-link", "app-privacy-policy");
+        displayRequestParamPrivacyConsent();
+        
         
     }
 
