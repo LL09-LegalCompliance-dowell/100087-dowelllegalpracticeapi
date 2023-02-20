@@ -9,9 +9,11 @@ from rest_framework.response import Response
 from rest_framework.request import Request
 from django.conf import settings
 from datetime import datetime
+import requests
 
 from utils.dowell import (
     fetch_document,
+    get_user_profile,
 
     LEGAL_POLICY_COLLECTION,
     PRIVACY_CONSENT_COLLECTION,

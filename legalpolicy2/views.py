@@ -2,6 +2,7 @@ import os
 from rest_framework.response import Response
 from utils.dowell import (
     fetch_document,
+    get_user_profile,
 
     LEGAL_POLICY_COLLECTION,
     PRIVACY_CONSENT_COLLECTION,
@@ -145,6 +146,9 @@ def load_public_legal_policy(request, app_event_id:str, policy:str):
         policy_request_id = f"{session_id}{policy}".upper()
         agreed_already_message = ""
         i_agree_status = 0
+
+        res = get_user_profile(session_id)
+        print(res)
 
         try:
 
