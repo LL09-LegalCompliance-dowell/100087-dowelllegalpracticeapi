@@ -1,4 +1,5 @@
 let base64String = "";
+let fileExtension = "png";
 
 // Assume that the input field is a file input with an ID 
 const signatureImage = document.getElementById('signature-image');
@@ -49,6 +50,8 @@ document.addEventListener("DOMContentLoaded", function(){
 signatureImage.addEventListener('change', function() {
 
   const file = signatureImage.files[0];
+  console.log(file.name);
+  fileExtension = file.name.split('.').pop().toLowerCase();
 
   // Create a FileReader object to read the image file
   const reader = new FileReader();
@@ -59,11 +62,11 @@ signatureImage.addEventListener('change', function() {
     const dataUrl = reader.result;
 
     // Remove the data URL prefix
-    base64String = dataUrl.replace(/^data:image\/(png|jpg);base64,/, '');
+    base64String = dataUrl.replace(/^data:image\/(png|jpg|jpeg);base64,/, '');
 
     // The base64String variable now contains the Base64-encoded image data
     // console.log(base64String);
-    signatureImageDisplay.setAttribute("src", `data:image/png;base64,${base64String}`);
+    signatureImageDisplay.setAttribute("src", `data:image/${fileExtension};base64,${base64String}`);
     signatureImageContainer.style.display = "block";
 
   });
@@ -121,6 +124,7 @@ document.getElementById("form").addEventListener('submit', function(event) {
         name: name,
         address: address,
         signature: base64String,
+        signature_file_extension: fileExtension,
         consent_status: "Confirmed",
         personal_data_usage: getPersonalDataUsage(),
         other_usage_of_personal_data: otherUsageOfPersonalData

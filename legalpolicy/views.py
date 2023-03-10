@@ -674,7 +674,7 @@ def load_privacy_consent(request, app_event_id:str):
         # load template from the filesystem
         content = read_template("privacy-consent-form.html")
 
-        # replace placeholders in the template with actual values
+        # replace placeholders in the template with actual values 
         privacy_consent = format_content(privacy_consent)
         privacy_consent = split_date_and_format_data(privacy_consent)
 
@@ -687,7 +687,8 @@ def load_privacy_consent(request, app_event_id:str):
             privacy_consent['is_locked'] = False
         if "company_website_url" not in privacy_consent:
             privacy_consent['company_website_url'] = ""
-
+        if "signature_file_extension" not in individual_providing_consent_detail:
+            individual_providing_consent_detail['signature_file_extension'] = "png"
 
         content = content.substitute(
             event_id= data["eventId"],

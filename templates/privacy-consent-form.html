@@ -458,7 +458,7 @@
 	<p class="c0"><span class="c2"></span></p>
 	<p class="c1"><span>To Be Signed by Individuals Providing Personal Data to the </span> ${company_name} <span class="c2">who is the controller of your personal data. </span></p>
 	<p class="c0"><span class="c2"></span></p>
-	<p class="c1"><span>You may contact or by phone and email at: ${company_email}</span> <span>[${privacy_policy_personal_data_collected}]. </span></p>
+	<p class="c1"><span>You may contact via email at: ${company_email}</span></p>
 	<p class="c0"><span class="c2"></span></p>
 	<p class="c0"><span class="c2"></span></p>
 	<p class="c1"><span class="c2">Your personal data will be used for the following purposes (check all that apply):</span></p>
@@ -514,7 +514,7 @@
 			<p class="c1">Address of Individual providing Consent: <strong>${address}</strong></p>
 			<p class="c0"><span class="c2"></span></p>
 			<p class="c1"><span class="c2">Signature:</p>
-			<div><img height="120" src="data:image/png;base64,${signature}" /></div>
+			<div><img height="120" src="data:image/${signature_file_extension};base64,${signature}" /></div>
 			<p class="c0"><span class="c2"></span></p>
 
 			<p class="c1"><span class="c2">Date of Signature: <strong>${datetime}</strong></span></p>
@@ -538,7 +538,7 @@
 			<p id="address-error" style="color: red; display: none;">Address field required</p>
 
 			<p class="c0"><span class="c2"></span></p>
-			<p id="signature-field-container" class="c1"><span class="c2">Signature<span style="color: red;">*</span>:  <input id="signature-image" accept="image/png, image/gif, image/jpeg, image/jeg"  type="file"></span></p>
+			<p id="signature-field-container" class="c1"><span class="c2">Signature<span style="color: red;">*</span>:  <input id="signature-image" accept="image/png, image/jpeg, image/jpg"  type="file"></span></p>
 			<p id="signature-image-error" style="color: red; display: none;">Signature field required</p>
 
 			<div  id="signature-image-container" style="margin: 20px; display: none;"><img id="signature-image-display"  height="120" src="data:image/png;base64,${signature}" /></div>
