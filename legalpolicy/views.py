@@ -2,14 +2,13 @@ import os
 from django.urls import reverse
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.clickjacking import xframe_options_exempt
-import jwt
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.request import Request
 from django.conf import settings
 from datetime import datetime
-import requests
+import uuid
 
 from utils.dowell import (
     fetch_document,
@@ -19,8 +18,6 @@ from utils.dowell import (
     PRIVACY_CONSENT_COLLECTION,
     LEGAL_POLICY_DOCUMENT_NAME,
     PRIVACY_CONSENT_DOCUMENT_NAME,
-    LEGAL_POLICY_KEY,
-    PRIVACY_CONSENT_KEY,
     BASE_URL
 )
 from dowelllegalpracticeapi.settings import BASE_DIR
@@ -617,21 +614,18 @@ def split_date_and_format_data(data):
 def load_privacy_consent(request, app_event_id:str):
     try:
 
-
-        redirect_url = request.GET.get("redirect_url", "none")
         session_id = request.GET.get("session_id", "")
 
         # Get user profile data
         username = ""
-        user_id = ""
-        res = get_user_profile(session_id)
+        user_id = str(uuid.uuid4()) # default user id
 
+        # Get actual user profile
+        res = get_user_profile(session_id)
         if res:
             if "id" in res:
                 user_id = res["id"]
                 username = res["username"].strip()
-
-
 
         # retrieve compliance related data from
         # database 
@@ -643,8 +637,8 @@ def load_privacy_consent(request, app_event_id:str):
                     "$or": [ { "privacy_consent_policies.session_id": session_id }, { "privacy_consent_policies.user_id": user_id } ]
                  }
             )
+        
 
-        print("response_data['data']", len(response_data['data']))
         if not response_data['data']:
 
             # retrieve policy related data from
@@ -661,13 +655,7 @@ def load_privacy_consent(request, app_event_id:str):
             data_object = build_privacy_consent_object(app_data, username, session_id, user_id, app_event_id)
             response_data = create_privacy_consent(data_object)
 
-            
-
-        
-
-
-
-        
+        # Get privacy consent data
         data = response_data['data'][0]
         privacy_consent = data[PRIVACY_CONSENT_DOCUMENT_NAME]
 
@@ -678,6 +666,7 @@ def load_privacy_consent(request, app_event_id:str):
         privacy_consent = format_content(privacy_consent)
         privacy_consent = split_date_and_format_data(privacy_consent)
 
+        # format app policy url
         base_url = "http://127.0.0.1:8000" if settings.DEBUG else  BASE_URL
         individual_providing_consent_detail = privacy_consent['individual_providing_consent_detail']
         consent_status_detail = privacy_consent['consent_status_detail']
