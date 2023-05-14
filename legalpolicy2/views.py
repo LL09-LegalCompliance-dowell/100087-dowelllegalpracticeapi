@@ -3,13 +3,8 @@ from rest_framework.response import Response
 from utils.dowell import (
     fetch_document,
     get_user_profile,
-
     LEGAL_POLICY_COLLECTION,
-    PRIVACY_CONSENT_COLLECTION,
-    LEGAL_POLICY_DOCUMENT_NAME,
-    PRIVACY_CONSENT_DOCUMENT_NAME,
-    LEGAL_POLICY_KEY,
-    PRIVACY_CONSENT_KEY
+    LEGAL_POLICY_DOCUMENT_NAME
 )
 from dowelllegalpracticeapi.settings import BASE_DIR
 from django.http import HttpResponse
