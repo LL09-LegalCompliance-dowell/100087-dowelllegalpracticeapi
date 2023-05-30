@@ -1,13 +1,15 @@
 {
-    "action_type":"submit-signature",
-    "name":"worlako test",
-    "address":"company",
-    "signature":"iVBORw0KGgoAAAANSUhEUgAADIAAAAlgCAYAAABK ...",
-    "consent_status":"Confirmed",
-    "personal_data_usage":[
-       "Marketing",
-       "Technical support",
-       "Research"
-    ],
-    "other_usage_of_personal_data":"one,two,three,four"
- }
+   "platform_type": "App",
+   "app_or_website_or_service_name": "Sample",
+   "app_or_website_or_service_url": "https://play.google.com/store/apps/details?id=com.dowelllicenses.policies", 
+   "description": "App description", 
+   "company_name": "Dowell Sample", 
+   "company_address": "Singapore 7845 STREET", 
+   "company_registration_number": "SAMPLE78545REG", 
+   "company_country": "Singapore", 
+   "contact_email_id": "app@app.com", 
+   "website_contact_page_url": "http://appsample.com", 
+   "last_update_date": "2022-10-09", 
+   "type_of_personal_data_collected_from_users": ["Name", "Phone", "IP Address"], 
+   "personal_data_collected_from_users_will_be_used_for": ["Marketing", "Advertisement", "Research", "Technical Support"]
+}
