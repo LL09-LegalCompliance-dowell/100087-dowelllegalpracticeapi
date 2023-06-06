@@ -766,7 +766,52 @@ def create_privacy_consent(data):
         return response_json
 
 
+class PrivacyConsentStatus(APIView):
 
+    def get(self, request, app_event_id:str, session_id:str, format=None):
+        try:
+            # Get user profile data
+            username = ""
+            user_id = str(uuid.uuid4()) # default user id
 
+            # Get actual user profile
+            res = get_user_profile(session_id)
+            if res:
+                if "id" in res:
+                    user_id = res["id"]
+                    username = res["username"].strip()
 
+            # retrieve compliance related data from
+            # database 
+            response_data = fetch_document(
+                PRIVACY_CONSENT_COLLECTION,
+                PRIVACY_CONSENT_DOCUMENT_NAME,
+                fields={
+                        "privacy_consent_policies.app_or_website_consent_to_event_id": app_event_id,
+                        "$or": [ { "privacy_consent_policies.session_id": session_id }, { "privacy_consent_policies.user_id": user_id } ]
+                    }
+                )
+            
 
+            if not response_data['data']:
+                return Response("Privacy Consent Not Found", status=status.HTTP_404_NOT_FOUND)
+
+            # Get privacy consent data
+            data = response_data['data'][0]
+            privacy_consent = data[PRIVACY_CONSENT_DOCUMENT_NAME]
+            consent_status_detail = privacy_consent['consent_status_detail']
+
+            return Response({
+                "is_signed": True if consent_status_detail['status'].lower() == "confirmed" else False,
+                "datetime": consent_status_detail['datetime']
+            })
+
+        # The code below will
+        # execute when error occur
+        except Exception as e:
+            print(f"{e}")
+            return Response({
+                "error_msg": f"{e}"
+            },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
